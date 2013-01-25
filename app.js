@@ -1,5 +1,5 @@
 var canvas;
-var ctx;
+var gameCtx;
 
 var time = {
     current: 0,
@@ -7,10 +7,7 @@ var time = {
     start: 0
 };
 
-var game = {
-    funk: 0,
-    balls: null
-};
+var game = null;
 
 (function() {
   var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -23,39 +20,33 @@ function doFrame() {
     var timeDelta = time.current - time.lastFrame;
     if (timeDelta > 10) { // don't bother with drawing frames that are too close to each other
         time.lastFrame = time.current;
-        updateGame(timeDelta);
-        drawFrame();
+        game.update(timeDelta);
+        game.draw(gameCanvas, gameCtx);
     }
     requestAnimationFrame(doFrame);
 }
 
 function updateGame(timeDelta) {
-    game.funk = Math.sin(time.current * 0.002) * 0.5 + 0.5;
 }
 
 function drawFrame() {
-    ctx.fillStyle = 'rgb(' + Math.round(game.funk * 255) + ', 0, 0)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    game.balls.draw(10, game.funk * canvas.width);
 }
 
 function loadGameAssets() {
-    game.balls = new Sprite('350x150.gif');
 }
 
 function init() {
-    canvas = document.createElement('canvas');
-    canvas.id = 'game';
-    canvas.width = 640;
-    canvas.height = 480;
-    ctx = canvas.getContext('2d');
-    document.body.appendChild(canvas);
-    ctx.fillStyle = '#f9c';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    gameCanvas = document.createElement('canvas');
+    gameCanvas.id = 'game';
+    gameCanvas.width = 640;
+    gameCanvas.height = 480;
+    gameCtx = gameCanvas.getContext('2d');
+    document.body.appendChild(gameCanvas);
     startTime = Date.now(); 
     lastFrameTime = Date.now();
 
-    loadGameAssets();
+    game = new Game();
+    game.load();
 
     requestAnimationFrame(doFrame);
 }

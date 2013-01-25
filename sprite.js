@@ -9,7 +9,7 @@ var Sprite = function(filename) {
     };
 };
 
-Sprite.prototype.draw = function(x, y) {
+Sprite.prototype.draw = function(ctx, x, y) {
     if (this.loaded) {
         ctx.drawImage(this.img, x, y);
     }
