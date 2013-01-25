@@ -1,4 +1,4 @@
-var canvas;
+var gameCanvas;
 var gameCtx;
 
 var time = {
@@ -20,6 +20,26 @@ var GameSeries = function() {
     this.currentGame = null;
     this.gameIndex = -1;
     this.toNextGame();
+    
+    var that = this;
+    gameCanvas.addEventListener('mousedown', function(ev) {
+        if (that.currentGame !== null) {
+            ev.canvasCoords = getRelativeCoords(ev, gameCanvas);
+            that.currentGame.mousedown(ev);
+        }
+    });
+    gameCanvas.addEventListener('mousemove', function(ev) {
+        if (that.currentGame !== null) {
+            ev.canvasCoords = getRelativeCoords(ev, gameCanvas);
+            that.currentGame.mousemove(ev);
+        }
+    });
+    gameCanvas.addEventListener('mouseup', function(ev) {
+        if (that.currentGame !== null) {
+            ev.canvasCoords = getRelativeCoords(ev, gameCanvas);
+            that.currentGame.mouseup(ev);
+        }
+    });
 };
 
 GameSeries.prototype.toNextGame = function() {

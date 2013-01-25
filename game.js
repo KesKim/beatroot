@@ -15,12 +15,15 @@ Game.prototype.update = function(timeDelta) {
 };
 
 Game.prototype.mousedown = function(event) {
+    console.log('mousedown', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.mousemove = function(event) {
+    console.log('mousemove', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.mouseup = function(event) {
+    console.log('mouseup', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.load = function() {
