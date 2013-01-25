@@ -9,12 +9,6 @@ var time = {
 
 var game = null;
 
-(function() {
-  var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-  window.requestAnimationFrame = requestAnimationFrame;
-})();
-
 function doFrame() {
     time.current = Date.now(); 
     var timeDelta = time.current - time.lastFrame;
