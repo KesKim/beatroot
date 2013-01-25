@@ -8,7 +8,8 @@ var time = {
 };
 
 var game = {
-    funk: 0
+    funk: 0,
+    balls: null
 };
 
 (function() {
@@ -35,6 +36,11 @@ function updateGame(timeDelta) {
 function drawFrame() {
     ctx.fillStyle = 'rgb(' + Math.round(game.funk * 255) + ', 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    game.balls.draw(10, game.funk * canvas.width);
+}
+
+function loadGameAssets() {
+    game.balls = new Sprite('350x150.gif');
 }
 
 function init() {
@@ -48,5 +54,8 @@ function init() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     startTime = Date.now(); 
     lastFrameTime = Date.now();
+
+    loadGameAssets();
+
     requestAnimationFrame(doFrame);
 }
