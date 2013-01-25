@@ -16,3 +16,6 @@ Game.prototype.mousemove = function(event) {
 
 Game.prototype.mouseup = function(event) {
 };
+
+Game.prototype.load = function() {
+};
