@@ -86,7 +86,6 @@ Dialog.prototype.checkForFade = function() {
 
     if ( doBlankScreen === true )
     {
-        console.log('Starting fade');
         this.originalFadeDuration = 1.0;
         this.fadeInSecondsRemaining = 1.0;
     }
