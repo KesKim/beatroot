@@ -68,7 +68,8 @@ Game.prototype.cleanUp = function() {
 
 Game.prototype.startGame = function() {
 	this.dialog = new Dialog([
-        new DialogLine('I AM THE BEATROOT.'),
+		new DialogLine('YOU HAVE FOUND ME.'),
+        new DialogLine('I AM THE BEATROOT OF INSPIRATION.'),
         'Nice to meet you.',
         'You\'ve got the funk now.',
         'Use it wisely.']
