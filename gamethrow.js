@@ -8,8 +8,8 @@ var GameThrow = function() {
     this.currentVelX = 0;
     this.currentVelY = 0;
     this.angleRadians = 0;
-    this.startPointX = 125;
-    this.startPointY = 310;
+    this.startPoint = new Vec2(80, 300);
+    this.armPoint = new Vec2(47, 366);
     this.characterArmThrown = null;
     this.characterArmCharge = null;
     this.throwDelayElapsed = 0;
@@ -58,18 +58,18 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     }
     
     if (this.coordinates !== null) {
-        this.armRotation = Math.atan2(this.startPointY - this.coordinates.y, this.startPointX - this.coordinates.x) + Math.PI;
+        this.armRotation = Math.atan2(this.armPoint.y - this.coordinates.y, this.armPoint.x - this.coordinates.x) + Math.PI;
     }
 
     // "Animation"
     if (this.mouseUp)
     {
-        this.characterArmThrown.drawRotated(ctx, 47, 366);
+        this.characterArmThrown.drawRotated(ctx, this.armPoint.x, this.armPoint.y, this.armRotation);
     }
 
     if (this.mouseDown)
     {
-        this.characterArmCharge.drawRotated(ctx, 47, 366, this.armRotation);
+        this.characterArmCharge.drawRotated(ctx, this.armPoint.x, this.armPoint.y, this.armRotation);
     }
 
 };
@@ -96,7 +96,7 @@ GameThrow.prototype.update = function(timeDelta) {
 
 GameThrow.prototype.mousedown = function(event) {
     // Start throw process if push event coordinates in the allowed zone, and the timeout has expired
-    if (event.canvasCoords.x > 46 && event.canvasCoords.y < 366 && this.throwDelayElapsed > this.throwDelay)
+    if (event.canvasCoords.x > this.armPoint.x && event.canvasCoords.y < this.armPoint.y && this.throwDelayElapsed > this.throwDelay)
     {
         this.mouseDown = true;  
         this.mouseUp = false;
@@ -112,7 +112,7 @@ GameThrow.prototype.mouseup = function(event) {
     {
         // Calculate the angle of attack
         var mouseCoords = event.canvasCoords;
-        var angle = Math.atan((this.startPointY - mouseCoords.y) / (this.startPointX - mouseCoords.x));
+        var angle = Math.atan((this.armPoint.y - mouseCoords.y) / (this.armPoint.x - mouseCoords.x));
 
         if (angle > 0)
             angle = 0;
@@ -124,7 +124,7 @@ GameThrow.prototype.mouseup = function(event) {
         this.mouseDown = false;
 
         // Create new projectile
-        var throwableItem = new GameObject('spear.png', 46, 366);
+        var throwableItem = new GameObject('spear.png', this.startPoint.x, this.startPoint.y);
         throwableItem.load();
         throwableItem.velX = this.powerMeter * Math.cos(angle);
         throwableItem.velY = this.powerMeter * Math.sin(angle);
