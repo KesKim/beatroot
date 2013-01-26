@@ -7,6 +7,7 @@ var GameDubstep = function() {
 
 GameDubstep.prototype.draw = function(canvas, ctx) {
     this.bg.draw(ctx, 0, 0);
+    this.progress.draw(ctx);
     this.dialog.draw(ctx, 100, 300);
 };
 
@@ -52,6 +53,7 @@ GameDubstep.prototype.createCheckbox = function(parent, id, displayName) {
 
 GameDubstep.prototype.update = function(timeDelta) {
     this.stateMachine.update(timeDelta);
+    this.progress.update(timeDelta);
 
     if (this.stateMachine.state === 'notinitialized') {
         if (this.stateMachine.timer > 2000) {
@@ -65,7 +67,12 @@ GameDubstep.prototype.update = function(timeDelta) {
             expertSettings.onclick = function() { 
                 alert('To enable expert settings, you need to purchase the full version of DubstepMaker Creative 2017.');
                 expertSettings.checked = false;
-                that.clicks++; };
+                if (that.createdDubstep) {
+                    that.progress.add(0.15);
+                } else {
+                    that.progress.add(0.02);
+                }
+            };
             this.createSlider(this.dubstepEditor, 'WUB');
             this.createSlider(this.dubstepEditor, 'AutoTune&trade;');
             
@@ -73,7 +80,8 @@ GameDubstep.prototype.update = function(timeDelta) {
             butan.type = 'button';
             butan.value = 'Create dubstep';
             butan.onclick = function() {
-                that.clicks++;
+                that.progress.add(0.05);
+                that.createdDubstep = true;
                 that.music.stop();
                 that.music.play();
             };
@@ -84,7 +92,7 @@ GameDubstep.prototype.update = function(timeDelta) {
             this.stateMachine.advanceState();
         }
     } else if (this.stateMachine.state === 'initialized') {
-        if (this.clicks > 10) {
+        if (this.progress.finished) {
             if (this.dubstepEditor !== null && this.dubstepEditor !== undefined) {
                 document.body.removeChild(this.dubstepEditor);
                 this.dubstepEditor = null;
@@ -127,6 +135,7 @@ GameDubstep.prototype.cleanUp = function() {
     this.dubstepEditor = null;
     this.initialized = false;
     this.clicks = 0;
+    this.createdDubstep = false;
     if ( this.music !== null ) {
         this.music.stop();
     }
@@ -134,6 +143,7 @@ GameDubstep.prototype.cleanUp = function() {
     if (this.dialog !== null) {
         this.dialog.reset();
     }
+    this.progress = new Progress('Frustration', 0.5);
 };
 
 GameDubstep.prototype.startGame = function() {
