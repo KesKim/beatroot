@@ -12,17 +12,21 @@ var time = {
 var game = null;
 
 var GameSeries = function() {
+    var rockDialog = ['foo', 'bar', 'baz'];
     var jungleDialog = ['...', 'I feel like my life should have a higher purpose.', 'I gotta go deeper.'];
     var ancientDialog = ['Oh my word!', 'What IS that in the distance?', 'It\'s getting closer!'];
     var ancientHitSfx = ['lintuosuma.ogg'];
     var ancientThrowSfx = ['keihas.ogg'];
     var ancientMusic = ['metsastys.ogg'];
+
     this.games = [
         new GameDubstep(),
+        new GameWank('Street-credibility', 4000, rockDialog, ['jungle.ogg'], 'bg-rock.png', 'comb.png', new Vec2(320, 200), 0, 110),
         new GameWank('Ignition', 5000, jungleDialog, ['jungle.ogg'], 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0),
         new GameThrow(ancientThrowSfx, ancientHitSfx ,new Vec2(320, 160), ancientDialog, ancientMusic, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png','spearthrow.png','bird.png'),
         new Game()
     ];
+
     this.fade = 0.0;
     this.fadeDelta = 0.0;
     this.nextGame = null;
