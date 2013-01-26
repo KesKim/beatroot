@@ -104,16 +104,34 @@ Dialog.prototype.advance = function() {
 };
 
 Dialog.prototype.checkForFade = function() {
-    var doBlankScreen = (typeof(this.lines[this.currentLine]) != 'string');
-    this.currentIsFadingIn = true;
+    var thisLine = this.lines[this.currentLine];
+    var thisIsBlackScreen = (typeof(thisLine) != 'string');
+    console.log('This is black: ' + thisIsBlackScreen);
+    console.log(thisLine);
 
-    if ( doBlankScreen === true )
-    {
-        this.startFade();
+    var nextLineIndex = this.currentLine + 1;
+    var lastIndex = this.lines.length - 1;
+    
+    if ( nextLineIndex > lastIndex ) {
+        nextLineIndex = lastIndex;
+    }
+
+    var nextLine = this.lines[nextLineIndex];
+    var nextIsClearScreen = (typeof(nextLine) == 'string');
+    console.log('Next is clear: ' + nextIsClearScreen);
+    console.log(nextLine);
+
+    if ( thisIsBlackScreen ) {
+        this.opacity = 1.0;
+
+        if ( nextLine && nextIsClearScreen === true ) {
+            console.log('Start fade, next is: ' + nextLine);
+            this.startFade();
+        }
     }
 }
 
 Dialog.prototype.startFade = function() {
-    this.opacity = 1.0;
+    console.log('Starting fade with next transition.');
     this.fadeWhenChangingLine = true;
 }
