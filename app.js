@@ -13,7 +13,8 @@ var game = null;
 
 var GameSeries = function() {
     this.games = [
-        //new GameWank(),
+        new GameWank(),
+        new GameThrow(),
         new Game()
     ];
     this.fade = 0.0;
@@ -69,7 +70,7 @@ GameSeries.prototype.changeGame = function(to, doFade) {
     }
     if (doFade) {
         this.nextGame = to;
-        this.fadeDelta = -0.5;
+        this.fadeDelta = -2.0;
     } else {
         this.nextGame = null;
         this.currentGame = to;
@@ -79,7 +80,9 @@ GameSeries.prototype.changeGame = function(to, doFade) {
 };
 
 GameSeries.prototype.draw = function(canvas, ctx) {
-    this.currentGame.draw(canvas, ctx);
+    if (this.currentGame !== null) {
+        this.currentGame.draw(canvas, ctx);
+    }
     ctx.fillStyle = 'black';
     ctx.globalAlpha = 1.0 - this.fade;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -98,7 +101,7 @@ GameSeries.prototype.update = function(timeDelta) {
         this.fade = 0;
         if (this.nextGame !== null) {
             this.currentGame = this.nextGame;
-            this.fadeDelta = 0.5;
+            this.fadeDelta = 2.0;
         }
     }
     if (this.fade > 1.0) {
