@@ -8,6 +8,8 @@ var Game = function() {
     this.arrow = null;
     this.dialog = null;
     this.progress = null;
+    this.music = null;
+    this.musicFilename = ['dubstep_good.ogg'];
 };
 
 Game.prototype.draw = function(canvas, ctx) {
@@ -106,6 +108,10 @@ Game.prototype.load = function() {
     this.basket = new Sprite('basket.png');
     this.arrow = new Sprite('arrow.png');
     this.beatRootSmall = new Sprite('beatroot-small.png');
+
+    if (this.musicFilename !== null) {
+        this.music = new Audio(this.musicFilename, true);
+    }
 };
 
 Game.prototype.isFinished = function() {
@@ -113,10 +119,16 @@ Game.prototype.isFinished = function() {
 };
 
 Game.prototype.cleanUp = function() {
-
+    if (this.music !== null) {
+        this.music.stop();
+    }
 };
 
 Game.prototype.startGame = function() {
+    if (this.music !== null) {
+        this.music.play();
+    }
+
 	this.dialog = new Dialog([
 		new DialogLine('YOU HAVE FOUND ME.'),
         new DialogLine('I AM THE BEATROOT OF INSPIRATION.'),
