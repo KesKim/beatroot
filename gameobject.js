@@ -1,4 +1,4 @@
-var GameObject = function(url, x, y, rotateAccordingToVelocity, scale) {
+var GameObject = function(sprite, x, y, rotateAccordingToVelocity, scale) {
     if (rotateAccordingToVelocity === undefined) {
         rotateAccordingToVelocity = true;
     }
@@ -14,8 +14,7 @@ var GameObject = function(url, x, y, rotateAccordingToVelocity, scale) {
     this.accX = null;
     this.accY = null;
     this.gravity = 0.1;
-    this.sprite = null;
-    this.url = url;
+    this.sprite = sprite;
     this.rotation = 0;
 };
 
@@ -36,8 +35,4 @@ GameObject.prototype.update = function(timeDelta) {
     } else {
         this.rotation += timeDelta * 0.001;
     }
-};
-
-GameObject.prototype.load = function() {
-    this.sprite = new Sprite(this.url);
 };

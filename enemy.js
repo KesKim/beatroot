@@ -1,12 +1,11 @@
-var Enemy = function(url, x, y) {
+var Enemy = function(sprite, x, y) {
     this.posX = x;
     this.posY = y;
     this.velX = 3;
     this.velY = 0;
     this.accX = null;
     this.accY = null;
-    this.sprite = null;
-    this.url = url;
+    this.sprite = sprite;
     this.rotation = 0;
     this.canvasWidth = 0;
     this.moveForward = true;
@@ -61,10 +60,6 @@ Enemy.prototype.update = function(timeDelta, start, end) {
 
     // TODO: Does not work
     this.posY += this.goToSineY(1,100);
-};
-
-Enemy.prototype.load = function() {
-    this.sprite = new Sprite(this.url);
 };
 
 Enemy.prototype.goToSineY = function(amplitude, frequency, time)
