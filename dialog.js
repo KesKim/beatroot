@@ -52,7 +52,10 @@ Dialog.prototype.update = function(timeDelta) {
     }
 };
 
-Dialog.prototype.draw = function(ctx, x, y) {
+Dialog.prototype.draw = function(ctx, x, y, centered) {
+    if (centered === undefined) {
+        centered = false;
+    }
     if (!this.finished && this.started) {
         var nextLine = this.lines[this.currentLine];
         var doBlankScreen = (typeof nextLine != 'string');
@@ -75,6 +78,9 @@ Dialog.prototype.draw = function(ctx, x, y) {
         var measurement = ctx.measureText(nextLine);
         
         ctx.fillStyle = 'black';
+        if (centered) {
+            x -= measurement.width * 0.5 + 10;
+        }
         ctx.fillRect(x, y, measurement.width + 20, 30);
         ctx.fillStyle = 'white';
         ctx.fillText(nextLine, x + 10, y + 20);

@@ -28,7 +28,7 @@ Game.prototype.draw = function(canvas, ctx) {
     ctx.globalAlpha = (0.5 - Math.abs(0.5 - this.arrowFade)) * 2.0;
     this.arrow.drawRotated(ctx, this.basketX, gameCanvas.height - 100 - Math.sin(this.arrowFade * 40.0) * 10.0, 0.0, 1.0);
     ctx.globalAlpha = 1.0;
-    this.dialog.draw(ctx, 100, 300);
+    this.dialog.draw(ctx, 320, 420, true);
 };
 
 Game.prototype.update = function(timeDelta) {
@@ -121,8 +121,8 @@ Game.prototype.startGame = function() {
 		new DialogLine('YOU HAVE FOUND ME.'),
         new DialogLine('I AM THE BEATROOT OF INSPIRATION.'),
         'Nice to meet you.',
-        'You\'ve got the funk now.',
-        'Use it wisely.']
+        'From now on, things are going to get a lot more funky.',
+        'Use your powers wisely.']
     );
 
     this.dialog.start();
