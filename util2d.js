@@ -25,3 +25,10 @@ function getRelativeCoords(event, element) {
     }
     return new Vec2(event.clientX - rect.left + 0.5, event.clientY - rect.top + 0.5);
 }
+
+function positionRelativeToCanvas(element, left, top) {
+    var rect = gameCanvas.getBoundingClientRect();
+    element.style.position = 'absolute';
+    element.style.left = rect.left + left + 'px';
+    element.style.top = rect.top + top + 'px';
+}
