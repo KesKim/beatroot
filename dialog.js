@@ -90,6 +90,16 @@ Dialog.prototype.advance = function() {
         this.currentLine--;
     }
 
+    if ( this.fadeWhenChangingLine ) {
+        this.fadeWhenChangingLine = false;
+
+        // Start a fade.
+        console.log('Fade-in from darkened line: ' + this.lines[this.currentLine].text);
+        this.originalFadeDuration = 5.0 * 1000.0;
+        this.fadeInSecondsRemaining = 5.0 * 1000.0;
+        this.opacity = 1.0;
+    }
+
     this.checkForFade();
 };
 
@@ -99,10 +109,11 @@ Dialog.prototype.checkForFade = function() {
 
     if ( doBlankScreen === true )
     {
-        // Start a fade.
-        console.log('Fade-in from darkened line: ' + this.lines[this.currentLine].text);
-        this.originalFadeDuration = 5.0 * 1000.0;
-        this.fadeInSecondsRemaining = 5.0 * 1000.0;
-        this.opacity = 1.0;
+        this.startFade();
     }
+}
+
+Dialog.prototype.startFade = function() {
+    this.opacity = 1.0;
+    this.fadeWhenChangingLine = true;
 }
