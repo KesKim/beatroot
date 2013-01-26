@@ -12,6 +12,8 @@ Dialog.prototype.reset = function() {
     this.started = false;    
     this.opacityReduction = 0.0;
     this.fadeInSecondsRemaining = 0.0;
+    this.opacity = 0.0;
+    this.fadeWhenChangingLine = false;
 };
 
 Dialog.prototype.click = function() {
@@ -25,37 +27,48 @@ Dialog.prototype.start = function() {
 
 Dialog.prototype.update = function(timeDelta) {
     this.time += timeDelta;
+
+    // Fade handling.
+    if ( this.fadeInSecondsRemaining > 0.0 ) {
+        this.fadeInSecondsRemaining -= timeDelta;
+
+        var opacityPercent = this.fadeInSecondsRemaining / this.originalFadeDuration;
+
+        if ( opacityPercent < 0.0 ) {
+            console.log('Fade over.');
+            opacityPercent = 0.0;
+        }
+
+        this.opacity = opacityPercent;
+    } else if ( this.fadeInSecondsRemaining <= 0.0 ) {
+        this.fadeInSecondsRemaining = 0.0;
+    }
+
+    // Advancement handling and timing limiters.
     if (this.clicked && !this.finished) {
         this.clicked = false;
         if (this.time > this.lastChangeTime + this.minChangeInterval) {
             this.advance();
-        }
-
-        if ( this.fadeInSecondsRemaining > 0.0 ) {
-            this.fadeInSecondsRemaining -= timeDelta;
-
-            var opacityPercent = this.fadeInSecondsRemaining / this.originalFadeDuration;
-            this.opacity = opacityPercent;
-        } else if ( this.fadeInSecondsRemaining <= 0.0 ) {
-            this.fadeInSecondsRemaining = 0.0;
         }
     }
 };
 
 Dialog.prototype.draw = function(ctx, x, y) {
     if (!this.finished && this.started) {
-
         var nextLine = this.lines[this.currentLine];
         var doBlankScreen = (typeof nextLine != 'string');
 
         if ( doBlankScreen === true )
         {
             ctx.fillStyle = nextLine.blankScreenColor;
-;
+
             ctx.globalAlpha = this.opacity;
             ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 
             nextLine = nextLine.text;
+        } else if ( this.fadeInSecondsRemaining ) {
+            ctx.globalAlpha = this.opacity;
+            ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
         }
 
         ctx.font = '18px sans-serif';
@@ -86,7 +99,10 @@ Dialog.prototype.checkForFade = function() {
 
     if ( doBlankScreen === true )
     {
-        this.originalFadeDuration = 1.0;
-        this.fadeInSecondsRemaining = 1.0;
+        // Start a fade.
+        console.log('Fade-in from darkened line: ' + this.lines[this.currentLine].text);
+        this.originalFadeDuration = 5.0 * 1000.0;
+        this.fadeInSecondsRemaining = 5.0 * 1000.0;
+        this.opacity = 1.0;
     }
 }
