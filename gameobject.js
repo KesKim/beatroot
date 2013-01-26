@@ -11,6 +11,11 @@ var GameObject = function(url, x, y) {
     this.rotation = 0;
 };
 
+GameObject.prototype.calculateRotation = function()
+{
+    return Math.atan(this.velY / this.velX);
+};
+
 GameObject.prototype.draw = function(canvas, ctx) {
     this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation);
 };
@@ -19,6 +24,7 @@ GameObject.prototype.update = function(timeDelta) {
     this.velY += this.gravity;
     this.posY += this.velY;
     this.posX += this.velX;
+    this.rotation = this.calculateRotation();
 };
 
 GameObject.prototype.load = function() {
