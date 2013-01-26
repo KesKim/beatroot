@@ -1,7 +1,7 @@
 var Enemy = function(url, x, y) {
     this.posX = x;
     this.posY = y;
-    this.velX = 5;
+    this.velX = 3;
     this.velY = 0;
     this.accX = null;
     this.accY = null;
@@ -43,13 +43,13 @@ Enemy.prototype.isColliding = function(x, y)
     }
 }
 
-Enemy.prototype.update = function(timeDelta) {
-    if (this.posX < this.canvasWidth && this.moveForward)
+Enemy.prototype.update = function(timeDelta, start, end) {
+    if (this.posX < end && this.moveForward)
     {
         this.moveForward = true;
         this.posX += (this.velX * (timeDelta / 16));
     }
-    else if (this.posX < 0 && !this.moveForward)
+    else if (this.posX < start && !this.moveForward)
     {
         this.moveForward = true;
     }
