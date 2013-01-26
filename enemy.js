@@ -20,14 +20,14 @@ Enemy.prototype.draw = function(canvas, ctx) {
     {
         this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation);
 
-        if (developerMode)
-        {
-            ctx.beginPath();
-            ctx.arc(this.posX, this.posY, this.circleRadius, 0, 2 * Math.PI, false);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#003300';
-            ctx.stroke();
-        }
+        // if (developerMode)
+        // {
+        //     ctx.beginPath();
+        //     ctx.arc(this.posX, this.posY, this.circleRadius, 0, 2 * Math.PI, false);
+        //     ctx.lineWidth = 2;
+        //     ctx.strokeStyle = '#003300';
+        //     ctx.stroke();
+        // }
     }
 
     this.canvasWidth = canvas.width;
