@@ -45,19 +45,19 @@ var GameSeries = function() {
     });
 };
 
-GameSeries.prototype.toNextGame = function() {
+GameSeries.prototype.toNextGame = function(doFade) {
     this.gameIndex++;
     if (this.gameIndex < this.games.length) {
-        this.changeGame(this.games[this.gameIndex]);
+        this.changeGame(this.games[this.gameIndex], doFade);
     } else {
         console.log('Tried to progress beyond the last game');
     }
 };
 
-GameSeries.prototype.toPreviousGame = function() {
+GameSeries.prototype.toPreviousGame = function(doFade) {
     this.gameIndex--;
     if (this.gameIndex >= 0) {
-        this.changeGame(this.games[this.gameIndex]);
+        this.changeGame(this.games[this.gameIndex], doFade);
     } else {
         this.gameIndex = 0;
         console.log('Tried to progress beyond the first game');
@@ -145,14 +145,14 @@ function init() {
         gameChanger2.type = 'button';
         gameChanger2.value = 'Previous game';
         gameChanger2.addEventListener('click', function() {
-            gameSeries.toPreviousGame();
+            gameSeries.toPreviousGame(false);
         });
         document.body.appendChild(gameChanger2);
         var gameChanger = document.createElement('input');
         gameChanger.type = 'button';
         gameChanger.value = 'Next game';
         gameChanger.addEventListener('click', function() {
-            gameSeries.toNextGame();
+            gameSeries.toNextGame(false);
         });
         document.body.appendChild(gameChanger);
     }
