@@ -23,7 +23,7 @@ var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename,
 GameWank.prototype.resetGame = function() {
     this.isAnExample = false;
     this.wankedAmount = 0;
-    this.lastDirection = 0;
+    this.lastDirection = new Vec2(0, 0);
     this.oneDirectionAdded = 0;
     this.oneDirectionLimit = 50;
     this.lastWankPosition = null;
@@ -87,34 +87,52 @@ GameWank.prototype.mousedown = function(event) {
 GameWank.prototype.mousemove = function(event) {
     if (this.clickHeld === true && this.stateMachine.state === 'started') {
         var currentPos = event.canvasCoords;
+        var currentDirection = new Vec2(0, 0);
+        var directionChanged;
+        if (this.lastWankPosition !== null) {
+            if (!this.xFixed) {
+                var xDistance = currentPos.x - this.lastWankPosition.x;
+                currentDirection.x = xDistance < 0 ? -1 : 1;
+                directionChanged = currentDirection.x !== this.lastDirection.x;
+                if (directionChanged) {
+                    // Reset one-way-wank limiter.
+                    this.oneDirectionAdded = 0;
+                }
 
-        var lastX = this.lastWankPosition !== null ? 0 : this.lastWankPosition.x;
-        var xDistance = currentPos.x - lastX;
+                if (this.oneDirectionAdded <= this.oneDirectionLimit) {
+                    var absDistance = Math.abs(xDistance);
+                    this.progress.add(absDistance / this.wankRequired);
+                    this.oneDirectionAdded += absDistance;
+                }
 
-        var currentDirection = xDistance < 0 ? -1 : 1;
+                this.lastDirection.x = currentDirection.x;
+            }
+            if (!this.yFixed) {
+                var yDistance = currentPos.y - this.lastWankPosition.y;
+                currentDirection.y = yDistance < 0 ? -1 : 1;
+                directionChanged = currentDirection.y !== this.lastDirection.y;
+                if (directionChanged) {
+                    // Reset one-way-wank limiter.
+                    this.oneDirectionAdded = 0;
+                }
+                
+                if (this.oneDirectionAdded <= this.oneDirectionLimit) {
+                    var absDistance = Math.abs(yDistance);
+                    this.progress.add(absDistance / this.wankRequired);
+                    this.oneDirectionAdded += absDistance;
+                }
 
-        var directionChanged = currentDirection !== this.lastDirection;
-
-        if (directionChanged === true) {
-            // Reset one-way-wank limiter.
-            this.oneDirectionAdded = 0;
+                this.lastDirection.y = currentDirection.y;
+            }
         }
-
-        if (this.oneDirectionAdded <= this.oneDirectionLimit) {
-            var absDistance = Math.abs(xDistance);
-            this.progress.add(absDistance / this.wankRequired);
-            this.oneDirectionAdded += absDistance;
-        }
-
-        this.lastDirection = xDistance < 0 ? -1 : 1;
         this.lastWankPosition = currentPos;
     }
 };  
 
 GameWank.prototype.mouseup = function(event) {
+    this.clickHeld = false;
     if (this.stateMachine.state === 'started') {
-        this.clickHeld = false;
-        this.lastDirection = 0;
+        this.lastDirection = new Vec2(0, 0);
         this.lastWankPosition = null;
         this.oneDirectionAdded = 0;
     }
