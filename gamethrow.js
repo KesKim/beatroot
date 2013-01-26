@@ -7,6 +7,11 @@ var GameThrow = function() {
     this.coordinates = null;
     this.currentVelX = 0;
     this.currentVelY = 0;
+    this.angleRadians = 0;
+    this.startPointX = 125;
+    this.startPointY = 310;
+    this.characterArmThrown = null;
+    this.characterArmCharge = null;
 };
 
 GameThrow.prototype.resetGame = function() {
@@ -28,7 +33,21 @@ GameThrow.prototype.draw = function(canvas, ctx) {
         ctx.fillText('Mouse X: ' + this.coordinates.x, 20, 40);
         ctx.fillText('Mouse Y: ' + this.coordinates.y, 20, 60);
         ctx.fillText('Velocity: ' + this.currentVelX + ', ' + this.currentVelY, 20, 80);
+        ctx.fillText('Angle: ' + this.angleRadians, 20, 100);
+        ctx.fillText('MouseDown: ' + this.mouseDown, 20, 120);
+        ctx.fillText('MouseUp: ' + this.mouseUp, 20, 140);
     }
+
+    if (this.mouseUp)
+    {
+        this.characterArmThrown.drawRotated(ctx, 47, 366);
+    }
+
+    if (this.mouseDown)
+    {
+        this.characterArmCharge.drawRotated(ctx, 47, 366);
+    }
+
 };
 
 GameThrow.prototype.update = function(timeDelta) {
@@ -39,12 +58,19 @@ GameThrow.prototype.update = function(timeDelta) {
 
     if (this.mouseDown)
     {
-        this.powerMeter += 0.5;
+        if (this.powerMeter < 15)
+        {
+            this.powerMeter += 0.5; 
+        }
     }
 };
 
 GameThrow.prototype.mousedown = function(event) {
-    this.mouseDown = true;
+    if (event.canvasCoords.x > this.startPointX && event.canvasCoords.y < this.startPointY)
+    {
+        this.mouseDown = true;  
+        this.mouseUp = false;
+    }
 };
 
 GameThrow.prototype.mousemove = function(event) {
@@ -55,13 +81,20 @@ GameThrow.prototype.mouseup = function(event) {
     if (this.mouseDown)
     {
         var mouseCoords = event.canvasCoords;
-        var angle = Math.atan((366 - mouseCoords.y) / (46 - mouseCoords.x));
+        var angle = Math.atan((this.startPointY - mouseCoords.y) / (this.startPointX - mouseCoords.x));
 
+        if (angle > 0)
+            angle = 0;
+
+        if (angle < -1.4)
+            angle = -1.4;
+
+        this.angleRadians = angle;
         this.mouseDown = false;
-        var throwableItem = new GameObject('350x150.gif', 50, 250);
+        var throwableItem = new GameObject('spear.png', 46, 366);
         throwableItem.load();
-        throwableItem.velX = 10 * Math.cos(angle);
-        throwableItem.velY = 10 * Math.sin(angle);
+        throwableItem.velX = this.powerMeter * Math.cos(angle);
+        throwableItem.velY = this.powerMeter * Math.sin(angle);
 
         this.currentVelX = throwableItem.velX;
         this.currentVelY = throwableItem.velY;
@@ -80,6 +113,8 @@ GameThrow.prototype.mouseup = function(event) {
 
 GameThrow.prototype.load = function() {
     this.bg = new Sprite('bg-ancient.png');
+    this.characterArmThrown = new Sprite('thrown.png');
+    this.characterArmCharge = new Sprite('spearthrow.png');
 };
 
 GameThrow.prototype.isFinished = function() {
