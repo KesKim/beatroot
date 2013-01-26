@@ -120,7 +120,7 @@ GameDubstep.prototype.mouseup = function(event) {
 
 GameDubstep.prototype.load = function() {
     this.bg = new Sprite('bg-dubstep.png');
-    this.music = new Audio(['dubstep_good.mp3', 'dubstep_good.ogg']);
+    this.music = new Audio(['dubstep_shit.ogg']);
 };
 
 GameDubstep.prototype.isFinished = function() {
