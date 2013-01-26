@@ -1,12 +1,12 @@
 var Audio = function(filenameOgg) {
-	this.loaded = false;
+    this.loaded = false;
 
-	this.filenameA = filenameOgg;
-	//this.filenameB = filenameB;
-	this.audio = document.createElement('audio');
+    this.filenameA = filenameOgg;
+    //this.filenameB = filenameB;
+    this.audio = document.createElement('audio');
     this.audio.loop = true;
-	console.log(this.audio);
-	// TODO add looping.
+    console.log(this.audio);
+    // TODO add looping.
 
     if ( filenameOgg )
     {
@@ -22,23 +22,23 @@ var Audio = function(filenameOgg) {
         this.audio.appendChild(sourceB);    
     }*/
 
-	var that = this;
+    var that = this;
 
-	sourceOgg.onload = function() {
-		that.loaded = true;
+    sourceOgg.onload = function() {
+        that.loaded = true;
 
-		if ( playWhenLoaded != null )
-		{
-			this.play();
-		}
-	}
+        if ( playWhenLoaded != null )
+        {
+            this.play();
+        }
+    }
 }
 
 Audio.prototype.play = function () {
-	if ( this.loaded ) {
-		this.audio.play();
-	}
-	else {
-		this.playWhenLoaded = true;
-	}
+    if ( this.loaded ) {
+        this.audio.play();
+    }
+    else {
+        this.playWhenLoaded = true;
+    }
 }
