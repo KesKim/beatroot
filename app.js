@@ -15,7 +15,7 @@ var GameSeries = function() {
     var jungleDialog = ['...', 'I feel like my life should have a higher purpose.', 'I gotta go deeper.'];
     this.games = [
         new GameDubstep(),
-        new GameWank('Ignition', 2000, jungleDialog, null, 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0),
+        new GameWank('Ignition', 6000, jungleDialog, null, 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0),
         new GameThrow('spear.png','bg-ancient.png','thrown.png','spearthrow.png'),
         new Game()
     ];

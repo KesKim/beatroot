@@ -88,7 +88,7 @@ GameWank.prototype.mousemove = function(event) {
         var currentDirection = new Vec2(0, 0);
         var directionChanged;
         if (this.lastWankPosition !== null) {
-            if (!this.xLimit) {
+            if (this.xLimit > 0) {
                 var xDistance = currentPos.x - this.lastWankPosition.x;
                 currentDirection.x = xDistance < 0 ? -1 : 1;
                 directionChanged = currentDirection.x !== this.lastDirection.x;
@@ -105,7 +105,7 @@ GameWank.prototype.mousemove = function(event) {
 
                 this.lastDirection.x = currentDirection.x;
             }
-            if (!this.yLimit) {
+            if (this.yLimit > 0) {
                 var yDistance = currentPos.y - this.lastWankPosition.y;
                 currentDirection.y = yDistance < 0 ? -1 : 1;
                 directionChanged = currentDirection.y !== this.lastDirection.y;
