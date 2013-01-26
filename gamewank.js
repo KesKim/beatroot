@@ -27,11 +27,12 @@ GameWank.prototype.mousedown = function(event) {
 GameWank.prototype.mousemove = function(event) {
 	if ( this.clickHeld === true )
 	{
-		//var currentPos = event.position
-		//currentPosx - this.lastWankPosition.x // x moved
+		var currentPos = event.canvasCoords;
 
-		//this.lastWankPosition = event.x, event.y
-		this.lastWankPosition = event.canvasCoords;
+		var xDistance = currentPos.x - this.lastWankPosition.x;
+		console.log('Latest distance traveled: ' + xDistance);
+		
+		this.lastWankPosition = currentPos
 	}
 };	
 
