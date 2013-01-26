@@ -12,10 +12,10 @@ var time = {
 var game = null;
 
 var GameSeries = function() {
-    var jungleDialog = ['I feel like my life should have a higher purpose.', '...', 'I gotta go deeper.'];
+    var jungleDialog = ['...', 'I feel like my life should have a higher purpose.', 'I gotta go deeper.'];
     this.games = [
         new GameDubstep(),
-        new GameWank('Satiation', 3000, jungleDialog, null, 'bg-jungle.png', '350x150.gif', new Vec2(320, 160), false, true),
+        new GameWank('Ignition', 6000, jungleDialog, null, 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0),
         new GameThrow('spear.png','bg-ancient.png','thrown.png','spearthrow.png'),
         new Game()
     ];

@@ -1,9 +1,9 @@
-var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename, bgFilename, objectFilename, focusPoint, xFixed, yFixed) {
-    if (xFixed === undefined) {
-        xFixed = false;
+var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename, bgFilename, objectFilename, focusPoint, xLimit, yLimit) {
+    if (xLimit === undefined) {
+        xLimit = 320;
     }
-    if (yFixed === undefined) {
-        yFixed = false;
+    if (yLimit === undefined) {
+        yLimit = 240;
     }
     this.progressTitle = progressTitle;
     this.wankRequired = wankRequired;
@@ -15,8 +15,8 @@ var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename,
     this.objectSprite = null;
     this.music = null;
     this.focus = focusPoint;
-    this.xFixed = xFixed;
-    this.yFixed = yFixed;
+    this.xLimit = xLimit;
+    this.yLimit = yLimit;
     this.resetGame();
 };
 
@@ -25,7 +25,7 @@ GameWank.prototype.resetGame = function() {
     this.wankedAmount = 0;
     this.lastDirection = new Vec2(0, 0);
     this.oneDirectionAdded = 0;
-    this.oneDirectionLimit = 50;
+    this.oneDirectionLimit = 40;
     this.lastWankPosition = null;
     this.dialog = new Dialog(this.dialogLines);
     this.progress = new Progress(this.progressTitle, 0.0, 0.0);
@@ -46,12 +46,10 @@ GameWank.prototype.update = function(timeDelta) {
     if (this.stateMachine.state === 'started') {
         if (this.lastWankPosition) {
             var c = Math.pow(0.99, timeDelta);
-            if (!this.xFixed) {
-                this.drawPos.x = this.drawPos.x * (1.0 - c) + this.lastWankPosition.x * c;
-            }
-            if (!this.yFixed) {
-                this.drawPos.y = this.drawPos.y * (1.0 - c) + this.lastWankPosition.y * c;
-            }
+            this.drawPos.x = this.drawPos.x * (1.0 - c) + this.lastWankPosition.x * c;
+            this.drawPos.y = this.drawPos.y * (1.0 - c) + this.lastWankPosition.y * c;
+            this.drawPos.x = Math.min(Math.max(this.drawPos.x, this.focus.x - this.xLimit), this.focus.x + this.xLimit);
+            this.drawPos.y = Math.min(Math.max(this.drawPos.y, this.focus.y - this.yLimit), this.focus.y + this.yLimit);
         } else {
             var c = Math.pow(0.85, timeDelta);
             this.drawPos.x = this.drawPos.x * (1.0 - c) + this.focus.x * c;
@@ -90,7 +88,7 @@ GameWank.prototype.mousemove = function(event) {
         var currentDirection = new Vec2(0, 0);
         var directionChanged;
         if (this.lastWankPosition !== null) {
-            if (!this.xFixed) {
+            if (this.xLimit > 0) {
                 var xDistance = currentPos.x - this.lastWankPosition.x;
                 currentDirection.x = xDistance < 0 ? -1 : 1;
                 directionChanged = currentDirection.x !== this.lastDirection.x;
@@ -107,7 +105,7 @@ GameWank.prototype.mousemove = function(event) {
 
                 this.lastDirection.x = currentDirection.x;
             }
-            if (!this.yFixed) {
+            if (this.yLimit > 0) {
                 var yDistance = currentPos.y - this.lastWankPosition.y;
                 currentDirection.y = yDistance < 0 ? -1 : 1;
                 directionChanged = currentDirection.y !== this.lastDirection.y;
