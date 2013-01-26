@@ -1,14 +1,14 @@
 var Game = function() {
     this.isAnExample = true;
     this.funk = 0;
-    this.balls = null;
+    this.beatRoot = null;
     this.dialog = null;
 };
 
 Game.prototype.draw = function(canvas, ctx) {
-    ctx.fillStyle = 'rgb(' + Math.round(this.funk * 255) + ', 0, 0)';
+    ctx.fillStyle = 'rgb(' + Math.round(this.funk * 20) + ', 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    this.balls.drawRotated(ctx, canvas.width * 0.5, canvas.height * 0.5, this.funk * 2.0, this.funk * 0.5 + 1.0);
+    this.beatRoot.drawRotated(ctx, canvas.width * 0.5, canvas.height * 0.5, this.funk * 0.5 - 0.25, this.funk * 0.5 + 1.0);
     this.dialog.draw(ctx, 100, 300);
 };
 
@@ -28,11 +28,11 @@ Game.prototype.mouseup = function(event) {
 };
 
 Game.prototype.load = function() {
-    this.balls = new Sprite('350x150.gif');
+    this.beatRoot = new Sprite('beatroot-big.png');
 };
 
 Game.prototype.isFinished = function() {
-    return false;
+    return this.dialog.finished;
 };
 
 Game.prototype.cleanUp = function() {
@@ -41,9 +41,10 @@ Game.prototype.cleanUp = function() {
 
 Game.prototype.startGame = function() {
 	this.dialog = new Dialog([
-    	new DialogLine('YOLO'),
-    	'LOL',
-    	'k?']
+        new DialogLine('I AM THE BEATROOT.'),
+        'Nice to meet you.',
+        'You\'ve got the funk now.',
+        'Use it wisely.']
     );
 
     this.dialog.start();
