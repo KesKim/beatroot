@@ -17,11 +17,15 @@ Sprite.prototype.draw = function(ctx, x, y) {
     }
 };
 
-Sprite.prototype.drawRotated = function(ctx, centerX, centerY, angleRadians) {
+Sprite.prototype.drawRotated = function(ctx, centerX, centerY, angleRadians, /* optional */ scale) {
+    if (scale === undefined) {
+        scale = 1.0;
+    }
     if (this.loaded) {
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(angleRadians);
+        ctx.scale(scale, scale);
         ctx.translate(-this.width * 0.5, -this.height * 0.5);
         ctx.drawImage(this.img, 0, 0);
         ctx.restore();

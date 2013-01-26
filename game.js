@@ -7,7 +7,7 @@ var Game = function() {
 Game.prototype.draw = function(canvas, ctx) {
     ctx.fillStyle = 'rgb(' + Math.round(this.funk * 255) + ', 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    this.balls.drawRotated(ctx, canvas.width * 0.5, canvas.height * 0.5, this.funk * 2.0);
+    this.balls.drawRotated(ctx, canvas.width * 0.5, canvas.height * 0.5, this.funk * 2.0, this.funk * 0.5 + 1.0);
 };
 
 Game.prototype.update = function(timeDelta) {
