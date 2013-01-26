@@ -23,11 +23,9 @@ Game.prototype.mousedown = function(event) {
 };
 
 Game.prototype.mousemove = function(event) {
-    console.log('mousemove', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.mouseup = function(event) {
-    console.log('mouseup', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.load = function() {
