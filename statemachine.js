@@ -5,10 +5,10 @@ var StateMachine = function(states) {
 
 StateMachine.prototype.reset = function() {
     this.stateIndex = -1;
-    this.advanceState();
+    this.advance();
 }
 
-StateMachine.prototype.advanceState = function() {
+StateMachine.prototype.advance = function() {
     this.stateIndex++;
     this.timer = 0;
     this.state = this.states[this.stateIndex];

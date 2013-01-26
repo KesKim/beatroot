@@ -14,7 +14,7 @@ var game = null;
 var GameSeries = function() {
     this.games = [
         new GameDubstep(),
-        new GameWank(),
+        new GameWank('Satiation', ['I feel like my life should have a higher purpose', '...', 'I gotta go deeper.'], null, 'bg-jungle.png', '350x150.gif'),
         new GameThrow(),
         new Game()
     ];
@@ -105,8 +105,6 @@ GameSeries.prototype.changeGame = function(to, doFade) {
         this.currentGame = to;
         this.fade = 1.0;
         this.fadeDelta = 0.0;
-
-        console.log(to);
 
         if (this.currentGame.startGame !== undefined) {
             this.currentGame.startGame();

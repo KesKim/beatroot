@@ -89,7 +89,7 @@ GameDubstep.prototype.update = function(timeDelta) {
             this.dubstepEditor.appendChild(butan);
             document.body.appendChild(this.dubstepEditor);
             positionRelativeToCanvas(this.dubstepEditor, (gameCanvas.width - 510) * 0.5, 50);
-            this.stateMachine.advanceState();
+            this.stateMachine.advance();
         }
     } else if (this.stateMachine.state === 'initialized') {
         if (this.progress.finished) {
@@ -97,13 +97,13 @@ GameDubstep.prototype.update = function(timeDelta) {
                 document.body.removeChild(this.dubstepEditor);
                 this.dubstepEditor = null;
             }
-            this.stateMachine.advanceState();
+            this.stateMachine.advance();
             this.dialog.start();
         }
     } else if (this.stateMachine.state === 'frustrated') {
         this.dialog.update(timeDelta);
         if (this.dialog.finished) {
-            this.stateMachine.advanceState();
+            this.stateMachine.advance();
         }
     }
 };
