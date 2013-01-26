@@ -4,6 +4,8 @@ var GameWank = function() {
     this.background = null;
     this.wankedAmount = 0;
     this.wankRequired = 100;
+    this.oneWayLimit = 15;
+    this.oneWayWank = 0;
 };
 
 GameWank.prototype.draw = function(canvas, ctx) {
@@ -34,7 +36,23 @@ GameWank.prototype.mousemove = function(event) {
 
 		var xDistance = currentPos.x - this.lastWankPosition.x;
 		console.log('Latest distance traveled: ' + xDistance);
-		
+
+		if ( this.oneWayLimit == null )
+		{
+			if ( xDistance < 0 )
+				this.oneWayLimit = -15;
+			else
+				this.oneWayLimit = 15;
+		}
+
+		if ( xDistance < 0 )
+		{
+			if ( this.oneWayWank >= this.oneWayLimit )
+			{
+				
+			}
+		}
+
 		this.lastWankPosition = currentPos
 	}
 };	
