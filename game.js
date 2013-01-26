@@ -42,10 +42,10 @@ Game.prototype.cleanUp = function() {
 }
 
 Game.prototype.startGame = function() {
-	this.dialog = new Dialog(
+	this.dialog = new Dialog([
     	new DialogLine('YOLO'),
     	'LOL',
-    	'k?'
+    	'k?']
     );
 
     this.dialog.start();
