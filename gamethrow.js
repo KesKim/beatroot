@@ -41,13 +41,22 @@ GameThrow.prototype.mousemove = function(event) {
 };
 
 GameThrow.prototype.mouseup = function(event) {
-    if (this.mouseDown === true)
+    if (this.mouseDown)
     {
+        var mouseCoords = event.canvasCoords;
+        var angle = Math.atan2(mouseCoords.y, mouseCoords.x);
+
         this.mouseDown = false;
         var throwableItem = new GameObject('350x150.gif', 50, 250);
         throwableItem.load();
-        throwableItem.velX = -this.powerMeter;
-        throwableItem.velY = this.powerMeter;
+        throwableItem.velX += this.powerMeter * angle;
+        throwableItem.velY += -this.powerMeter * angle;
+
+        if (this.throwableArray.length > 30)
+        {
+            this.throwableArray = [];
+        }
+
         this.throwableArray.push(throwableItem);
     }
 
