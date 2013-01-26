@@ -1,6 +1,6 @@
 var Dialog = function(lines) {
     this.lines = lines;
-    this.currentLine = 0;
+    this.currentLine = -1;
     this.minChangeInterval = 500;
     this.reset();
 };
@@ -10,6 +10,8 @@ Dialog.prototype.reset = function() {
     this.lastChangeTime = 0;
     this.finished = false;
     this.started = false;    
+    this.opacityReduction = 0.0;
+    this.fadeInSecondsRemaining = 0.0;
 };
 
 Dialog.prototype.click = function() {
@@ -18,6 +20,7 @@ Dialog.prototype.click = function() {
 
 Dialog.prototype.start = function() {
     this.started = true;
+    this.advance();
 };
 
 Dialog.prototype.update = function(timeDelta) {
@@ -26,6 +29,15 @@ Dialog.prototype.update = function(timeDelta) {
         this.clicked = false;
         if (this.time > this.lastChangeTime + this.minChangeInterval) {
             this.advance();
+        }
+
+        if ( this.fadeInSecondsRemaining > 0.0 ) {
+            this.fadeInSecondsRemaining -= timeDelta;
+
+            var opacityPercent = this.fadeInSecondsRemaining / this.originalFadeDuration;
+            this.opacity = opacityPercent;
+        } else if ( this.fadeInSecondsRemaining <= 0.0 ) {
+            this.fadeInSecondsRemaining = 0.0;
         }
     }
 };
@@ -39,6 +51,8 @@ Dialog.prototype.draw = function(ctx, x, y) {
         if ( doBlankScreen === true )
         {
             ctx.fillStyle = nextLine.blankScreenColor;
+;
+            ctx.globalAlpha = this.opacity;
             ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 
             nextLine = nextLine.text;
@@ -60,5 +74,20 @@ Dialog.prototype.advance = function() {
     this.currentLine++;
     if (this.currentLine >= this.lines.length) {
         this.finished = true;
+        this.currentLine--;
     }
+
+    this.checkForFade();
 };
+
+Dialog.prototype.checkForFade = function() {
+    var doBlankScreen = (typeof(this.lines[this.currentLine]) != 'string');
+    this.currentIsFadingIn = true;
+
+    if ( doBlankScreen === true )
+    {
+        console.log('Starting fade');
+        this.originalFadeDuration = 1.0;
+        this.fadeInSecondsRemaining = 1.0;
+    }
+}
