@@ -73,7 +73,7 @@ Dialog.prototype.draw = function(ctx, x, y) {
 
         ctx.font = '18px sans-serif';
         ctx.globalAlpha = 0.7;
-        var measurement = ctx.measureText(this.lines[this.currentLine]);
+        var measurement = ctx.measureText(nextLine);
         
         ctx.fillStyle = 'black';
         ctx.fillRect(x, y, measurement.width + 20, 30);
