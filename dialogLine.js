@@ -3,5 +3,9 @@ var DialogLine = function(string, clearScreenColor) {
 	this.blankScreenBeforeText = true;
 
 	// Use if defined.
-	this.blankScreenColor = clearScreenColor ? 'black' : clearScreenColor;
+	if ( clearScreenColor ) {
+		this.blankScreenColor = clearScreenColor;
+	} else {
+		this.blankScreenColor = 'black';
+	}
 }
