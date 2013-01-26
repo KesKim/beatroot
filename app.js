@@ -21,7 +21,7 @@ var GameSeries = function() {
 
     this.games = [
         new GameDubstep(),
-        new GameWank('Street-credibility', 4000, rockDialog, ['jungle.ogg'], 'bg-rock.png', 'comb.png', new Vec2(320, 200), 0, 110),
+        new GameWank('Street-credibility', 1800, rockDialog, ['jungle.ogg'], 'bg-rock.png', 'comb.png', new Vec2(320, 200), 0, 110),
         new GameWank('Ignition', 5000, jungleDialog, ['jungle.ogg'], 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0),
         new GameThrow(ancientThrowSfx, ancientHitSfx ,new Vec2(320, 160), ancientDialog, ancientMusic, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png','spearthrow.png','bird.png'),
         new Game()
