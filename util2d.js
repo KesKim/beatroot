@@ -27,7 +27,7 @@ function getRelativeCoords(event, element) {
 }
 
 function positionRelativeToCanvas(element, left, top) {
-    var rect = gameCanvas.getBoundingClientRect();
+    var rect = {top: gameCanvas.offsetTop, left: gameCanvas.offsetLeft};
     element.style.position = 'absolute';
     element.style.left = rect.left + left + 'px';
     element.style.top = rect.top + top + 'px';
