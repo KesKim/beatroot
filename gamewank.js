@@ -3,9 +3,10 @@ var GameWank = function() {
     this.isAnExample = false;
     this.background = null;
     this.wankedAmount = 0;
-    this.wankRequired = 100;
+    this.wankRequired = 200;
     this.lastDirection = 0;
     this.oneDirectionAdded = 0;
+    this.oneDirectionLimit = 50;
 };
 
 GameWank.prototype.draw = function(canvas, ctx) {
@@ -37,9 +38,10 @@ GameWank.prototype.mousemove = function(event) {
 		var currentPos = event.canvasCoords;
 
 		var xDistance = currentPos.x - this.lastWankPosition.x;
-		console.log('Latest distance traveled: ' + xDistance);
 
-		var directionChanged = !(xDistance < 0 && this.lastDirection < 0) || !(xDistance >= 0 && this.lastDirection >= 0);
+        var currentDirection = xDistance < 0 ? -1 : 1;
+
+		var directionChanged = currentDirection !== this.lastDirection;
 
 		if ( directionChanged === true )
 		{
@@ -48,15 +50,17 @@ GameWank.prototype.mousemove = function(event) {
 			this.oneDirectionAdded = 0;
 		}
 
+        console.log('Latest distance traveled: ' + xDistance);
+
 		if ( this.oneDirectionAdded <= this.oneDirectionLimit )
 		{
-			this.wankedAmount += xDistance;
-			this.oneDirectionAdded += Math.abs(xDistance);
+            var absDistance = Math.abs(xDistance);
+			this.wankedAmount += absDistance;
+			this.oneDirectionAdded += absDistance;
 		}
 
 		this.lastDirection = xDistance < 0 ? -1 : 1;
-		this.lastWankPosition = currentPos
-		console.log();
+		this.lastWankPosition = currentPos;
 	}
 };	
 
