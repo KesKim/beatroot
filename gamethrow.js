@@ -14,6 +14,7 @@ var GameThrow = function() {
     this.characterArmCharge = null;
     this.throwDelayElapsed = 0;
     this.throwDelay = 2000;
+    this.armRotation = -0.5;
 };
 
 GameThrow.prototype.resetGame = function() {
@@ -55,6 +56,10 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     {
          ctx.fillText('Picking up spear... ' + Math.round(this.throwDelayElapsed / this.throwDelay * 100) + '%', 10, 300);   
     }
+    
+    if (this.coordinates !== null) {
+        this.armRotation = Math.atan2(this.startPointY - this.coordinates.y, this.startPointX - this.coordinates.x) + Math.PI;
+    }
 
     // "Animation"
     if (this.mouseUp)
@@ -64,7 +69,7 @@ GameThrow.prototype.draw = function(canvas, ctx) {
 
     if (this.mouseDown)
     {
-        this.characterArmCharge.drawRotated(ctx, 47, 366);
+        this.characterArmCharge.drawRotated(ctx, 47, 366, this.armRotation);
     }
 
 };
