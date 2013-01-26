@@ -112,12 +112,14 @@ GameWank.prototype.mousemove = function(event) {
                 var yDistance = currentPos.y - this.lastWankPosition.y;
                 currentDirection.y = yDistance < 0 ? -1 : 1;
                 directionChanged = currentDirection.y !== this.lastDirection.y;
-                if (directionChanged) {
+                if (directionChanged && currentDirection.y == -1) {
                     // Reset one-way-wank limiter.
+                    this.soundRub.stop();
+                    this.soundRub.play();
                     this.oneDirectionAdded = 0;
                 }
                 
-                if (this.oneDirectionAdded <= this.oneDirectionLimit) {
+                if (this.oneDirectionAdded <= this.oneDirectionLimit && currentDirection.y == -1) {
                     var absDistance = Math.abs(yDistance);
                     this.progress.add(absDistance / this.wankRequired);
                     this.oneDirectionAdded += absDistance;
