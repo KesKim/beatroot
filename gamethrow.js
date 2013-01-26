@@ -4,6 +4,9 @@ var GameThrow = function() {
     this.powerMeter = 0;
     this.throwableArray = [];
     this.bg = null;
+    this.coordinates = null;
+    this.currentVelX = 0;
+    this.currentVelY = 0;
 };
 
 GameThrow.prototype.resetGame = function() {
@@ -18,7 +21,14 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     };
 
     ctx.fillStyle = 'red';
-    ctx.fillText('Power: ' + this.powerMeter, 10, 10);
+    ctx.fillText('Power: ' + this.powerMeter, 20, 20);
+
+    if (this.coordinates != null)
+    {
+        ctx.fillText('Mouse X: ' + this.coordinates.x, 20, 40);
+        ctx.fillText('Mouse Y: ' + this.coordinates.y, 20, 60);
+        ctx.fillText('Velocity: ' + this.currentVelX + ', ' + this.currentVelY, 20, 80);
+    }
 };
 
 GameThrow.prototype.update = function(timeDelta) {
@@ -29,7 +39,7 @@ GameThrow.prototype.update = function(timeDelta) {
 
     if (this.mouseDown)
     {
-        this.powerMeter -= 0.5;
+        this.powerMeter += 0.5;
     }
 };
 
@@ -38,19 +48,23 @@ GameThrow.prototype.mousedown = function(event) {
 };
 
 GameThrow.prototype.mousemove = function(event) {
+    this.coordinates = event.canvasCoords;
 };
 
 GameThrow.prototype.mouseup = function(event) {
     if (this.mouseDown)
     {
         var mouseCoords = event.canvasCoords;
-        var angle = Math.atan2(mouseCoords.y, mouseCoords.x);
+        var angle = Math.atan((366 - mouseCoords.y) / (46 - mouseCoords.x));
 
         this.mouseDown = false;
         var throwableItem = new GameObject('350x150.gif', 50, 250);
         throwableItem.load();
-        throwableItem.velX += this.powerMeter * angle;
-        throwableItem.velY += -this.powerMeter * angle;
+        throwableItem.velX = 10 * Math.cos(angle);
+        throwableItem.velY = 10 * Math.sin(angle);
+
+        this.currentVelX = throwableItem.velX;
+        this.currentVelY = throwableItem.velY;
 
         if (this.throwableArray.length > 30)
         {

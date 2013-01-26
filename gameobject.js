@@ -1,11 +1,11 @@
 var GameObject = function(url, x, y) {
     this.posX = x;
     this.posY = y;
-    this.velX = -10;
-    this.velY = -20;
+    this.velX = 0;
+    this.velY = 0;
     this.accX = null;
     this.accY = null;
-    this.gravity = 1;
+    this.gravity = 0;
     this.sprite = null;
     this.url = url;
 };
