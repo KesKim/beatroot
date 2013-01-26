@@ -140,7 +140,7 @@ GameWank.prototype.load = function() {
     this.background = new Sprite(this.bgFilename);
     this.objectSprite = new Sprite(this.objectFilename);
     if (this.musicFilename !== null) {
-        this.music = new Audio(this.musicFilename);
+        this.music = new Audio(this.musicFilename, true);
     }
 };
 
