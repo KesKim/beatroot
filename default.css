@@ -10,11 +10,8 @@ canvas#game {
 }
 
 #dubstepEditor {
-    position: relative;
     background: #fff;
-    top: -480px;
     width: 500px;
-    margin: auto;
     color: #000;
     border: 2px outset;
     padding: 1px;

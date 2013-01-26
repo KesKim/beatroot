@@ -6,6 +6,7 @@ var GameThrow = function() {
 GameThrow.prototype.draw = function(canvas, ctx) {
     ctx.fillStyle = 'rgb(' + Math.round(this.funk * 255) + ', 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    this.throwable
     this.throwable.draw(canvas, ctx);
 };
 
@@ -23,7 +24,7 @@ GameThrow.prototype.mouseup = function(event) {
 };
 
 GameThrow.prototype.load = function() {
-    this.throwable = new GameObject('350x150.gif', 20, 100);
+    this.throwable = new GameObject('350x150.gif', 200, 200);
     this.throwable.load();
 };
 

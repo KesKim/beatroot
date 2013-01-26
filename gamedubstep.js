@@ -72,6 +72,7 @@ GameDubstep.prototype.update = function(timeDelta) {
             this.dubstepEditor.appendChild(butan);
             this.initialized = true;
             document.body.appendChild(this.dubstepEditor);
+            positionRelativeToCanvas(this.dubstepEditor, (gameCanvas.width - 510) * 0.5, 50);
         }
     }
     
