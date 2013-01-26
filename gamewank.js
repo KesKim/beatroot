@@ -1,5 +1,4 @@
 var GameWank = function() {
-    console.log('Initiating: GameWank. Shake mouse horizontally.');
     this.background = null;
     this.resetGame();
 };
@@ -78,6 +77,7 @@ GameWank.prototype.mouseup = function(event) {
 
 GameWank.prototype.load = function() {
     this.background = new Sprite('350x150.gif');
+    this.music = new Audio(['dubstep_01.mp3']);
 };
 
 GameWank.prototype.isFinished = function() {
@@ -89,4 +89,11 @@ GameWank.prototype.isFinished = function() {
 
 GameWank.prototype.cleanUp = function() {
     this.resetGame();
+    this.music.stop();
 };
+
+GameWank.prototype.startGame = function() {
+    this.music.play();
+    console.log('Starting GameWank');
+
+}
