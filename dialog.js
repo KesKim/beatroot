@@ -95,8 +95,8 @@ Dialog.prototype.advance = function() {
 
         // Start a fade.
         console.log('Fade-in from darkened line: ' + this.lines[this.currentLine].text);
-        this.originalFadeDuration = 5.0 * 1000.0;
-        this.fadeInSecondsRemaining = 5.0 * 1000.0;
+        this.originalFadeDuration = 2.5 * 1000.0;
+        this.fadeInSecondsRemaining = 2.5 * 1000.0;
         this.opacity = 1.0;
     }
 
