@@ -33,7 +33,7 @@ Progress.prototype.draw = function(ctx) {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, 640, 30);
     ctx.fillStyle = 'red';
-    ctx.fillRect(120, 10, this.progress * 500, 10);
+    ctx.fillRect(measurement.width + 20, 10, this.progress * (600 - measurement.width), 10);
     ctx.fillStyle = 'white';
     ctx.fillText(this.title, 10, 20);
     ctx.globalAlpha = 1.0;
