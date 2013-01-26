@@ -1,9 +1,10 @@
 var Audio = function(filenameOgg) {
 	this.loaded = false;
 
-	this.filenameA = filenameA;
-	this.filenameB = filenameB;
+	this.filenameA = filenameOgg;
+	//this.filenameB = filenameB;
 	this.audio = document.createElement('audio');
+    this.audio.loop = true;
 	console.log(this.audio);
 	// TODO add looping.
 
