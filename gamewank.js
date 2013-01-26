@@ -7,6 +7,9 @@ var GameWank = function() {
 };
 
 GameWank.prototype.draw = function(canvas, ctx) {
+	ctx.fillStyle = 'rgb(0, 0, 0)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
 	var drawPosX = this.lastWankPosition ? this.lastWankPosition.x : (canvas.width / 2);
 	var drawPosY = this.lastWankPosition ? this.lastWankPosition.y : (canvas.height / 2);
 	this.background.draw(ctx, drawPosX - (this.background.width / 2), drawPosY - (this.background.height / 2));
@@ -45,7 +48,7 @@ GameWank.prototype.load = function() {
 	this.background = new Sprite('350x150.gif');
 };
 
-Game.prototype.isFinished = function() {
+GameWank.prototype.isFinished = function() {
 	if ( this.wankedAmount >= this.wankRequired )
 		return true;
 	else
