@@ -35,7 +35,6 @@ Dialog.prototype.update = function(timeDelta) {
         var opacityPercent = this.fadeInSecondsRemaining / this.originalFadeDuration;
 
         if ( opacityPercent < 0.0 ) {
-            console.log('Fade over.');
             opacityPercent = 0.0;
         }
 
@@ -94,7 +93,6 @@ Dialog.prototype.advance = function() {
         this.fadeWhenChangingLine = false;
 
         // Start a fade.
-        console.log('Fade-in from darkened line: ' + this.lines[this.currentLine].text);
         this.originalFadeDuration = 2.5 * 1000.0;
         this.fadeInSecondsRemaining = 2.5 * 1000.0;
         this.opacity = 1.0;
@@ -106,8 +104,6 @@ Dialog.prototype.advance = function() {
 Dialog.prototype.checkForFade = function() {
     var thisLine = this.lines[this.currentLine];
     var thisIsBlackScreen = (typeof(thisLine) != 'string');
-    console.log('This is black: ' + thisIsBlackScreen);
-    console.log(thisLine);
 
     var nextLineIndex = this.currentLine + 1;
     var lastIndex = this.lines.length - 1;
@@ -118,20 +114,16 @@ Dialog.prototype.checkForFade = function() {
 
     var nextLine = this.lines[nextLineIndex];
     var nextIsClearScreen = (typeof(nextLine) == 'string');
-    console.log('Next is clear: ' + nextIsClearScreen);
-    console.log(nextLine);
 
     if ( thisIsBlackScreen ) {
         this.opacity = 1.0;
 
         if ( nextLine && nextIsClearScreen === true ) {
-            console.log('Start fade, next is: ' + nextLine);
             this.startFade();
         }
     }
 }
 
 Dialog.prototype.startFade = function() {
-    console.log('Starting fade with next transition.');
     this.fadeWhenChangingLine = true;
 }
