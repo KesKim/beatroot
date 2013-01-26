@@ -75,7 +75,7 @@ Game.prototype.update = function(timeDelta) {
             }
         }
         if (!this.progress.finished && Math.random() < timeDelta * 0.01 * Math.pow(this.rootDensity, 1.5)) {
-            var newObj = new GameObject('beatroot-big.png', Math.random() * (gameCanvas.width - 30) + 15, -50.0 - Math.random() * 50.0, false, 0.2);
+            var newObj = new GameObject('beatroot-small.png', Math.random() * (gameCanvas.width - 30) + 15, -50.0 - Math.random() * 50.0, false, 1.0);
             newObj.gravity = 0.01;
             newObj.velY = 0;
             newObj.rotation = Math.random() * Math.PI * 2;
