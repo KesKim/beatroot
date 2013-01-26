@@ -32,6 +32,18 @@ Dialog.prototype.update = function(timeDelta) {
 
 Dialog.prototype.draw = function(ctx, x, y) {
     if (!this.finished && this.started) {
+
+        var nextLine = this.lines[this.currentLine];
+        var doBlankScreen = (typeof nextLine != 'string');
+
+        if ( doBlankScreen === true )
+        {
+            ctx.fillStyle = nextLine.blankScreenColor;
+            ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+            nextLine = nextLine.text;
+        }
+
         ctx.font = '18px sans-serif';
         ctx.globalAlpha = 0.7;
         var measurement = ctx.measureText(this.lines[this.currentLine]);
@@ -39,7 +51,7 @@ Dialog.prototype.draw = function(ctx, x, y) {
         ctx.fillStyle = 'black';
         ctx.fillRect(x, y, measurement.width + 20, 30);
         ctx.fillStyle = 'white';
-        ctx.fillText(this.lines[this.currentLine], x + 10, y + 20);
+        ctx.fillText(nextLine, x + 10, y + 20);
         ctx.globalAlpha = 1.0;
     }
 };
