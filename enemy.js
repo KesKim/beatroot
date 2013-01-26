@@ -10,7 +10,7 @@ var Enemy = function(url, x, y) {
     this.rotation = 0;
     this.canvasWidth = 0;
     this.moveForward = true;
-    this.circleRadius = 50;
+    this.circleRadius = 25;
     this.collides = false;
     this.destroyed = false;
 };
@@ -19,6 +19,15 @@ Enemy.prototype.draw = function(canvas, ctx) {
     if (!this.destroyed)
     {
         this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation);
+
+        if (developerMode)
+        {
+            ctx.beginPath();
+            ctx.arc(this.posX, this.posY, this.circleRadius, 0, 2 * Math.PI, false);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#003300';
+            ctx.stroke();
+        }
     }
 
     this.canvasWidth = canvas.width;
@@ -26,7 +35,7 @@ Enemy.prototype.draw = function(canvas, ctx) {
 
 Enemy.prototype.isColliding = function(x, y)
 {
-    var dist = Math.sqrt(Math.pow((this.posX - this.sprite.width * 0.5 - x), 2) + Math.pow((this.posY - this.sprite.height * 0.5 - y), 2));
+    var dist = Math.sqrt(Math.pow((this.posX - x), 2) + Math.pow((this.posY - y), 2));
 
     if (dist <= this.circleRadius)
     {

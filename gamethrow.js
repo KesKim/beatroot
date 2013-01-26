@@ -28,6 +28,8 @@ var GameThrow = function(urlProjectile, urlBg, urlCharacterArmThrown, urlCharact
     this.urlImgEnemy = urlEnemy;
     this.enemy = null;
     this.enemyOnScreen = false;
+    this.projectilePositionX = 0;
+    this.projectilePositionY = 0;
 };
 
 GameThrow.prototype.resetGame = function() {
@@ -67,6 +69,7 @@ GameThrow.prototype.draw = function(canvas, ctx) {
             ctx.fillText('MouseUp: ' + this.mouseUp, 20, 140);
             ctx.fillText('Delay: ' + this.throwDelayElapsed, 20, 160);
             ctx.fillText('Delta: ' + this.deltaTimeDebug, 20, 180);
+            ctx.fillRect(this.projectilePositionX,this.projectilePositionY,5,5);
         }
     }
 
@@ -105,12 +108,20 @@ GameThrow.prototype.update = function(timeDelta) {
 
     // Update enemies
     for (var j = this.enemyArray.length - 1; j >= 0; j--) {
-       this.enemyArray[j].update(timeDelta);
+        this.enemyArray[j].update(timeDelta);
+        if (this.enemyArray[j].destroyed)
+        {
+            this.enemyArray.pop();
+        }
     };
 
     for (var k = this.throwableArray.length - 1; k >= 0; k--) {
         for (var l = this.enemyArray.length - 1; l >= 0; l--) {
             var proj = this.throwableArray[k];
+
+            this.projectilePositionX = proj.posX;
+            this.projectilePositionY = proj.posY;
+
             this.enemyArray[l].isColliding(proj.posX, proj.posY);
         };
     };
@@ -128,10 +139,14 @@ GameThrow.prototype.update = function(timeDelta) {
     {
         this.enemyOnScreen = true;
     }
+    else
+    {
+        this.enemyOnScreen = false;
+    }
 
     if (!this.enemyOnScreen)
     {
-        var newEnemy = new Enemy(this.urlImgEnemy, 0, 40);
+        var newEnemy = new Enemy(this.urlImgEnemy, -40, 40);
         newEnemy.load();
         this.enemyArray.push(newEnemy);
     }
