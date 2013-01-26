@@ -26,7 +26,8 @@ Enemy.prototype.draw = function(canvas, ctx) {
 
 Enemy.prototype.isColliding = function(x, y)
 {
-    var dist = Math.sqrt(Math.pow((this.sprite.width * 0.5 - x), 2) + Math.pow((this.sprite.height * 0.5 - y), 2));
+    var dist = Math.sqrt(Math.pow((this.posX - this.sprite.width * 0.5 - x), 2) + Math.pow((this.posY - this.sprite.height * 0.5 - y), 2));
+
     if (dist <= this.circleRadius)
     {
         this.destroyed = true;

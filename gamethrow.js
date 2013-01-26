@@ -111,7 +111,7 @@ GameThrow.prototype.update = function(timeDelta) {
     for (var k = this.throwableArray.length - 1; k >= 0; k--) {
         for (var l = this.enemyArray.length - 1; l >= 0; l--) {
             var proj = this.throwableArray[k];
-            this.enemyArray[l].isColliding(proj.sprite.width, proj.sprite.height);
+            this.enemyArray[l].isColliding(proj.posX, proj.posY);
         };
     };
 
