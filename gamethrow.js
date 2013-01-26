@@ -270,7 +270,7 @@ GameThrow.prototype.load = function() {
     this.throwSfx = new Audio(this.throwSfxFilename);
 
     if (this.musicFilename !== null) {
-        this.music = new Audio(this.musicFilename);
+        this.music = new Audio(this.musicFilename, true);
     }
 };
 
