@@ -1,7 +1,7 @@
 var Enemy = function(url, x, y) {
     this.posX = x;
     this.posY = y;
-    this.velX = 5;
+    this.velX = 3;
     this.velY = 0;
     this.accX = null;
     this.accY = null;
@@ -20,14 +20,14 @@ Enemy.prototype.draw = function(canvas, ctx) {
     {
         this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation);
 
-        if (developerMode)
-        {
-            ctx.beginPath();
-            ctx.arc(this.posX, this.posY, this.circleRadius, 0, 2 * Math.PI, false);
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#003300';
-            ctx.stroke();
-        }
+        // if (developerMode)
+        // {
+        //     ctx.beginPath();
+        //     ctx.arc(this.posX, this.posY, this.circleRadius, 0, 2 * Math.PI, false);
+        //     ctx.lineWidth = 2;
+        //     ctx.strokeStyle = '#003300';
+        //     ctx.stroke();
+        // }
     }
 
     this.canvasWidth = canvas.width;
@@ -43,13 +43,13 @@ Enemy.prototype.isColliding = function(x, y)
     }
 }
 
-Enemy.prototype.update = function(timeDelta) {
-    if (this.posX < this.canvasWidth && this.moveForward)
+Enemy.prototype.update = function(timeDelta, start, end) {
+    if (this.posX < end && this.moveForward)
     {
         this.moveForward = true;
         this.posX += (this.velX * (timeDelta / 16));
     }
-    else if (this.posX < 0 && !this.moveForward)
+    else if (this.posX < start && !this.moveForward)
     {
         this.moveForward = true;
     }
