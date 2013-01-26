@@ -89,9 +89,11 @@ GameSeries.prototype.changeGame = function(to, doFade) {
     if (to === undefined) {
         return;
     }
+
     if (doFade === undefined) {
         doFade = true;
     }
+
     if (doFade) {
         this.nextGame = to;
         this.fadeDelta = -2.0;
@@ -103,6 +105,12 @@ GameSeries.prototype.changeGame = function(to, doFade) {
         this.currentGame = to;
         this.fade = 1.0;
         this.fadeDelta = 0.0;
+
+        console.log(to);
+
+        if (this.currentGame.startGame !== undefined) {
+            this.currentGame.startGame();
+        }
     }
 };
 
@@ -133,6 +141,12 @@ GameSeries.prototype.update = function(timeDelta) {
             this.currentGame = this.nextGame;
             this.nextGame = null;
             this.fadeDelta = 2.0;
+
+            console.log('Fade end, game start');
+
+            if (this.currentGame.startGame !== undefined) {
+                this.currentGame.startGame();
+            }
         }
     }
     if (this.fade > 1.0) {
