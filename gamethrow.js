@@ -1,20 +1,27 @@
-var GameThrow = function() {
+var GameThrow = function(urlProjectile, urlBg, urlCharacterArmThrown, urlCharacterArmCharge) {
     this.mouseDown = false;
     this.mouseUp = true;
     this.powerMeter = 0;
     this.throwableArray = [];
     this.bg = null;
+    this.urlImgBg = urlBg;
     this.coordinates = null;
     this.currentVelX = 0;
     this.currentVelY = 0;
     this.angleRadians = 0;
+    this.armRotation = -0.5;
     this.startPoint = new Vec2(80, 300);
     this.armPoint = new Vec2(47, 366);
+    this.startPointX = 125;
+    this.startPointY = 310;
+    this.urlImgCharacterArmThrown = urlCharacterArmThrown;
+    this.urlImgCharacterArmCharge = urlCharacterArmCharge;
     this.characterArmThrown = null;
     this.characterArmCharge = null;
     this.throwDelayElapsed = 0;
-    this.throwDelay = 2000;
-    this.armRotation = -0.5;
+    this.throwDelay = 1000;
+    this.urlImgProjectile = urlProjectile;
+    this.deltaTimeDebug = 0;
 };
 
 GameThrow.prototype.resetGame = function() {
@@ -47,6 +54,7 @@ GameThrow.prototype.draw = function(canvas, ctx) {
             ctx.fillText('MouseDown: ' + this.mouseDown, 20, 120);
             ctx.fillText('MouseUp: ' + this.mouseUp, 20, 140);
             ctx.fillText('Delay: ' + this.throwDelayElapsed, 20, 160);
+            ctx.fillText('Delta: ' + this.deltaTimeDebug, 20, 180);
         }
     }
 
@@ -76,9 +84,11 @@ GameThrow.prototype.draw = function(canvas, ctx) {
 
 GameThrow.prototype.update = function(timeDelta) {
 
+    this.deltaTimeDebug = timeDelta;
+
     // Update projectiles
     for (var i = this.throwableArray.length - 1; i >= 0; i--) {
-        this.throwableArray[i].update();
+        this.throwableArray[i].update(timeDelta);
     };
 
     // Charge throw power
@@ -117,8 +127,8 @@ GameThrow.prototype.mouseup = function(event) {
         if (angle > 0)
             angle = 0;
 
-        if (angle < -1.4)
-            angle = -1.4;
+        if (angle < -1.3)
+            angle = -1.3;
 
         this.angleRadians = angle;
         this.mouseDown = false;
@@ -150,9 +160,9 @@ GameThrow.prototype.mouseup = function(event) {
 
 GameThrow.prototype.load = function() {
     // Load graphics
-    this.bg = new Sprite('bg-ancient.png');
-    this.characterArmThrown = new Sprite('thrown.png');
-    this.characterArmCharge = new Sprite('spearthrow.png');
+    this.bg = new Sprite(this.urlImgBg);
+    this.characterArmThrown = new Sprite(this.urlImgCharacterArmThrown);
+    this.characterArmCharge = new Sprite(this.urlImgCharacterArmCharge);
 };
 
 GameThrow.prototype.isFinished = function() {

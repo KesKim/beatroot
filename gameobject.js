@@ -11,7 +11,7 @@ var GameObject = function(url, x, y) {
     this.rotation = 0;
 };
 
-GameObject.prototype.calculateRotation = function()
+GameObject.prototype.calculateRotationAccordingToVelocity = function()
 {
     return Math.atan(this.velY / this.velX);
 };
@@ -21,10 +21,10 @@ GameObject.prototype.draw = function(canvas, ctx) {
 };
 
 GameObject.prototype.update = function(timeDelta) {
-    this.velY += this.gravity;
-    this.posY += this.velY;
-    this.posX += this.velX;
-    this.rotation = this.calculateRotation();
+    this.velY += (this.gravity * (timeDelta / 16));
+    this.posY += (this.velY * (timeDelta / 16));
+    this.posX += (this.velX * (timeDelta / 16));
+    this.rotation = this.calculateRotationAccordingToVelocity();
 };
 
 GameObject.prototype.load = function() {
