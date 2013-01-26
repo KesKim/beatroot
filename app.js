@@ -14,10 +14,13 @@ var game = null;
 var GameSeries = function() {
     var jungleDialog = ['...', 'I feel like my life should have a higher purpose.', 'I gotta go deeper.'];
     var ancientDialog = ['Oh my word!', 'What IS that in the distance?', 'It\'s getting closer!'];
+    var ancientHitSfx = ['lintuosuma.ogg'];
+    var ancientThrowSfx = ['keihas.ogg'];
+    var ancientMusic = ['metsastys.ogg'];
     this.games = [
         new GameDubstep(),
         new GameWank('Ignition', 5000, jungleDialog, ['jungle.ogg'], 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0),
-        new GameThrow(new Vec2(320, 160), ancientDialog, null, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png','spearthrow.png','bird.png'),
+        new GameThrow(ancientThrowSfx, ancientHitSfx ,new Vec2(320, 160), ancientDialog, ancientMusic, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png','spearthrow.png','bird.png'),
         new Game()
     ];
     this.fade = 0.0;
