@@ -3,6 +3,7 @@ var GameThrow = function() {
     this.mouseUp = true;
     this.powerMeter = 0;
     this.throwableArray = [];
+    this.bg = null;
 };
 
 GameThrow.prototype.resetGame = function() {
@@ -10,8 +11,7 @@ GameThrow.prototype.resetGame = function() {
 }
 
 GameThrow.prototype.draw = function(canvas, ctx) {
-    ctx.fillStyle = 'rgb(' + Math.round(this.funk * 255) + ', 0, 0)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    this.bg.draw(ctx, 0, 0);
 
     for (var i = this.throwableArray.length - 1; i >= 0; i--) {
         this.throwableArray[i].draw(canvas, ctx);
@@ -41,13 +41,22 @@ GameThrow.prototype.mousemove = function(event) {
 };
 
 GameThrow.prototype.mouseup = function(event) {
-    if (this.mouseDown === true)
+    if (this.mouseDown)
     {
+        var mouseCoords = event.canvasCoords;
+        var angle = Math.atan2(mouseCoords.y, mouseCoords.x);
+
         this.mouseDown = false;
         var throwableItem = new GameObject('350x150.gif', 50, 250);
         throwableItem.load();
-        throwableItem.velX = -this.powerMeter;
-        throwableItem.velY = this.powerMeter;
+        throwableItem.velX += this.powerMeter * angle;
+        throwableItem.velY += -this.powerMeter * angle;
+
+        if (this.throwableArray.length > 30)
+        {
+            this.throwableArray = [];
+        }
+
         this.throwableArray.push(throwableItem);
     }
 
@@ -56,7 +65,7 @@ GameThrow.prototype.mouseup = function(event) {
 };
 
 GameThrow.prototype.load = function() {
-
+    this.bg = new Sprite('bg-ancient.png');
 };
 
 GameThrow.prototype.isFinished = function() {
