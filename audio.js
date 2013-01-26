@@ -1,44 +1,16 @@
-var Audio = function(filenameOgg) {
+var Audio = function(filenames) {
     this.loaded = false;
-
-    this.filenameA = filenameOgg;
-    //this.filenameB = filenameB;
+    this.playWhenLoaded = false;
+    this.filenames = filenames;
     this.audio = document.createElement('audio');
-    this.audio.loop = true;
-    console.log(this.audio);
-    // TODO add looping.
-
-    if ( filenameOgg )
-    {
-        var sourceOgg = document.createElement('source');
-        sourceOgg.src = 'Assets/' + filenameOgg;
-        this.audio.appendChild(sourceOgg);
-    }
-
-    /*if ( filenameB )
-    {
-        var sourceB = document.createElement('source');
-        sourceB.src = 'Assets/' + filenameB;
-        this.audio.appendChild(sourceB);    
-    }*/
-
-    var that = this;
-
-    sourceOgg.onload = function() {
-        that.loaded = true;
-
-        if ( playWhenLoaded != null )
-        {
-            this.play();
-        }
+    this.audio.loop = false;
+    for (var i = 0; i < this.filenames.length; ++i) {
+        var source = document.createElement('source');
+        source.src = 'Assets/' + this.filenames[i];
+        this.audio.appendChild(source);
     }
 }
 
 Audio.prototype.play = function () {
-    if ( this.loaded ) {
-        this.audio.play();
-    }
-    else {
-        this.playWhenLoaded = true;
-    }
+    this.audio.play();
 }

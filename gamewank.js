@@ -78,7 +78,7 @@ GameWank.prototype.mouseup = function(event) {
 
 GameWank.prototype.load = function() {
     this.background = new Sprite('350x150.gif');
-    this.music = new Audio('dubstep_01.mp3');
+    this.music = new Audio(['dubstep_01.mp3']);
     this.music.play(); // TEST: should play when loaded.
 };
 
