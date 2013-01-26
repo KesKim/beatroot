@@ -121,7 +121,6 @@ GameDubstep.prototype.mouseup = function(event) {
 GameDubstep.prototype.load = function() {
     this.bg = new Sprite('bg-dubstep.png');
     this.music = new Audio(['dubstep_01.mp3']);
-    this.dialog = new Dialog(['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives and find the the origin of all beats.', 'The BEATROOT.']);
 };
 
 GameDubstep.prototype.isFinished = function() {
@@ -144,6 +143,7 @@ GameDubstep.prototype.cleanUp = function() {
         this.dialog.reset();
     }
     this.progress = new Progress('Frustration', 0.5);
+    this.dialog = new Dialog(['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives...', '... and find the the origin of all beats.', 'The BEATROOT.']);
 };
 
 GameDubstep.prototype.startGame = function() {

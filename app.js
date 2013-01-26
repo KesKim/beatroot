@@ -12,9 +12,10 @@ var time = {
 var game = null;
 
 var GameSeries = function() {
+    var jungleDialog = ['I feel like my life should have a higher purpose.', '...', 'I gotta go deeper.'];
     this.games = [
         new GameDubstep(),
-        new GameWank('Satiation', ['I feel like my life should have a higher purpose', '...', 'I gotta go deeper.'], null, 'bg-jungle.png', '350x150.gif'),
+        new GameWank('Satiation', 3000, jungleDialog, null, 'bg-jungle.png', '350x150.gif', new Vec2(320, 160), false, true),
         new GameThrow(),
         new Game()
     ];

@@ -18,6 +18,9 @@ Sprite.prototype.draw = function(ctx, x, y) {
 };
 
 Sprite.prototype.drawRotated = function(ctx, centerX, centerY, angleRadians, /* optional */ scale) {
+    if (angleRadians === undefined) {
+        angleRadians = 0.0;
+    }
     if (scale === undefined) {
         scale = 1.0;
     }

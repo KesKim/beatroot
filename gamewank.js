@@ -1,5 +1,12 @@
-var GameWank = function(progressTitle, dialogLines, musicFilename, bgFilename, objectFilename) {
+var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename, bgFilename, objectFilename, focusPoint, xFixed, yFixed) {
+    if (xFixed === undefined) {
+        xFixed = false;
+    }
+    if (yFixed === undefined) {
+        yFixed = false;
+    }
     this.progressTitle = progressTitle;
+    this.wankRequired = wankRequired;
     this.dialogLines = dialogLines;
     this.musicFilename = musicFilename;
     this.bgFilename = bgFilename;
@@ -7,27 +14,29 @@ var GameWank = function(progressTitle, dialogLines, musicFilename, bgFilename, o
     this.background = null;
     this.objectSprite = null;
     this.music = null;
+    this.focus = focusPoint;
+    this.xFixed = xFixed;
+    this.yFixed = yFixed;
     this.resetGame();
 };
 
 GameWank.prototype.resetGame = function() {
     this.isAnExample = false;
     this.wankedAmount = 0;
-    this.wankRequired = 1000;
     this.lastDirection = 0;
     this.oneDirectionAdded = 0;
     this.oneDirectionLimit = 50;
     this.lastWankPosition = null;
     this.dialog = new Dialog(this.dialogLines);
     this.progress = new Progress(this.progressTitle, 0.0, 0.0);
-    this.stateMachine = new StateMachine(['started', 'dialog', 'finished']);
+    this.stateMachine = new StateMachine(['started', 'quit', 'dialog', 'finished']);
+    this.drawPos = new Vec2(this.focus.x, this.focus.y);
+    this.drawPosFall = 0.0;
 }
 
 GameWank.prototype.draw = function(canvas, ctx) {    
     this.background.draw(ctx, 0, 0);
-    var drawPosX = this.lastWankPosition ? this.lastWankPosition.x : (canvas.width / 2);
-    var drawPosY = this.lastWankPosition ? this.lastWankPosition.y : (canvas.height / 2);
-    this.objectSprite.draw(ctx, drawPosX - (this.objectSprite.width / 2), drawPosY - (this.objectSprite.height / 2));
+    this.objectSprite.drawRotated(ctx, this.drawPos.x, this.drawPos.y);
     this.progress.draw(ctx);
     this.dialog.draw(ctx, 100, 200);
 };
@@ -35,7 +44,26 @@ GameWank.prototype.draw = function(canvas, ctx) {
 GameWank.prototype.update = function(timeDelta) {
     this.progress.update(timeDelta);
     if (this.stateMachine.state === 'started') {
+        if (this.lastWankPosition) {
+            var c = Math.pow(0.99, timeDelta);
+            if (!this.xFixed) {
+                this.drawPos.x = this.drawPos.x * (1.0 - c) + this.lastWankPosition.x * c;
+            }
+            if (!this.yFixed) {
+                this.drawPos.y = this.drawPos.y * (1.0 - c) + this.lastWankPosition.y * c;
+            }
+        } else {
+            var c = Math.pow(0.85, timeDelta);
+            this.drawPos.x = this.drawPos.x * (1.0 - c) + this.focus.x * c;
+            this.drawPos.y = this.drawPos.y * (1.0 - c) + this.focus.y * c;
+        }
         if (this.progress.finished) {
+            this.stateMachine.advance();
+        }
+    } else if (this.stateMachine.state === 'quit') {
+        this.drawPosFall += 0.001 * timeDelta;
+        this.drawPos.y += this.drawPosFall * timeDelta;
+        if (this.drawPos.y > 1000) {
             this.stateMachine.advance();
             this.dialog.start();
         }
@@ -83,10 +111,12 @@ GameWank.prototype.mousemove = function(event) {
 };  
 
 GameWank.prototype.mouseup = function(event) {
-    this.clickHeld = false;
-    this.lastDirection = 0;
-    this.lastWankPosition = null;
-    this.oneDirectionAdded = 0;
+    if (this.stateMachine.state === 'started') {
+        this.clickHeld = false;
+        this.lastDirection = 0;
+        this.lastWankPosition = null;
+        this.oneDirectionAdded = 0;
+    }
 };
 
 GameWank.prototype.load = function() {
