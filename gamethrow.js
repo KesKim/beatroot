@@ -237,7 +237,6 @@ GameThrow.prototype.mouseup = function(event) {
             // Create new projectile
             var throwableItem = new GameObject(this.projectile, this.startPoint.x, this.startPoint.y);
             this.throwSfx.play();
-            throwableItem.load();
 
             throwableItem.velX = this.powerMeter * Math.cos(angle);
             throwableItem.velY = this.powerMeter * Math.sin(angle);
