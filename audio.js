@@ -14,3 +14,9 @@ var Audio = function(filenames) {
 Audio.prototype.play = function () {
     this.audio.play();
 }
+
+Audio.prototype.stop = function () {
+    this.audio.pause();
+    this.audio.ended = true;
+    this.audio.currentTime = 0;
+}
