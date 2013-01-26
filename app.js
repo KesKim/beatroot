@@ -51,6 +51,7 @@ GameSeries.prototype.toNextGame = function(doFade) {
     if (this.gameIndex < this.games.length) {
         this.changeGame(this.games[this.gameIndex], doFade);
     } else {
+        this.gameIndex = this.games.length - 1;
         console.log('Tried to progress beyond the last game');
     }
 };
@@ -66,6 +67,9 @@ GameSeries.prototype.toPreviousGame = function(doFade) {
 };
 
 GameSeries.prototype.changeGame = function(to, doFade) {
+    if (to === undefined) {
+        return;
+    }
     if (doFade === undefined) {
         doFade = true;
     }
@@ -96,7 +100,7 @@ GameSeries.prototype.draw = function(canvas, ctx) {
 GameSeries.prototype.update = function(timeDelta) {
     if (this.currentGame !== null) {
         this.currentGame.update(timeDelta);
-        if (this.currentGame.isFinished()) {
+        if (this.currentGame.isFinished() && this.nextGame === null) {
             this.toNextGame();
         }
     }
@@ -104,7 +108,11 @@ GameSeries.prototype.update = function(timeDelta) {
     if (this.fade < 0) {
         this.fade = 0;
         if (this.nextGame !== null) {
+            if (this.currentGame !== null && this.currentGame.cleanUp !== undefined) {
+                this.currentGame.cleanUp();
+            }
             this.currentGame = this.nextGame;
+            this.nextGame = null;
             this.fadeDelta = 2.0;
         }
     }
