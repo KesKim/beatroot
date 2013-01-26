@@ -51,12 +51,9 @@ GameWank.prototype.mousemove = function(event) {
 
         if ( directionChanged === true )
         {
-            console.log('direction just changed');
             // Reset one-way-wank limiter.
             this.oneDirectionAdded = 0;
         }
-
-        console.log('Latest distance traveled: ' + xDistance);
 
         if ( this.oneDirectionAdded <= this.oneDirectionLimit )
         {
