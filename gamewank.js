@@ -1,22 +1,25 @@
 var GameWank = function() {
     this.isAnExample = false;
+    this.background = null;
 };
 
-Game.prototype.draw = function(canvas, ctx) {
+GameWank.prototype.draw = function(canvas, ctx) {
+	this.background.draw(ctx, (canvas.width / 2) - (this.background.width / 2), (canvas.height / 2) - (this.background.height / 2));
 };
 
-Game.prototype.update = function(timeDelta) {
+GameWank.prototype.update = function(timeDelta) {
 };
 
-Game.prototype.mousedown = function(event) {
+GameWank.prototype.mousedown = function(event) {
 	this.clickHeld = true;
 };
 
-Game.prototype.mousemove = function(event) {
+GameWank.prototype.mousemove = function(event) {
 };
 
-Game.prototype.mouseup = function(event) {
+GameWank.prototype.mouseup = function(event) {
 };
 
-Game.prototype.load = function() {
+GameWank.prototype.load = function() {
+	this.background = new Sprite('350x150.gif');
 };

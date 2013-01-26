@@ -5,9 +5,9 @@ var Game = function() {
 };
 
 Game.prototype.draw = function(canvas, ctx) {
-    ctx.fillStyle = 'rgb(' + Math.round(game.funk * 255) + ', 0, 0)';
+    ctx.fillStyle = 'rgb(' + Math.round(this.funk * 255) + ', 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    this.balls.draw(ctx, 10, this.funk * canvas.width);
+    this.balls.draw(ctx, 10, this.funk * canvas.height * 0.5);
 };
 
 Game.prototype.update = function(timeDelta) {
@@ -15,14 +15,21 @@ Game.prototype.update = function(timeDelta) {
 };
 
 Game.prototype.mousedown = function(event) {
+    console.log('mousedown', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.mousemove = function(event) {
+    console.log('mousemove', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.mouseup = function(event) {
+    console.log('mouseup', event.canvasCoords.x, event.canvasCoords.y);
 };
 
 Game.prototype.load = function() {
     this.balls = new Sprite('350x150.gif');
+};
+
+Game.prototype.isFinished = function() {
+    return false;
 };

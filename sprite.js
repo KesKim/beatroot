@@ -6,6 +6,8 @@ var Sprite = function(filename) {
     var that = this;
     this.img.onload = function() {
         that.loaded = true;
+        that.width = that.img.width;
+        that.height = that.img.height;
     };
 };
 
