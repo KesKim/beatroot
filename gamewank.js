@@ -13,10 +13,11 @@ var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename,
     this.objectFilename = objectFilename;
     this.background = null;
     this.objectSprite = null;
-    this.music = null;
     this.focus = focusPoint;
     this.xLimit = xLimit;
     this.yLimit = yLimit;
+    this.music = null;
+    this.soundRub = null;
     this.resetGame();
 };
 
@@ -94,6 +95,8 @@ GameWank.prototype.mousemove = function(event) {
                 directionChanged = currentDirection.x !== this.lastDirection.x;
                 if (directionChanged) {
                     // Reset one-way-wank limiter.
+                    this.soundRub.stop();
+                    this.soundRub.play();
                     this.oneDirectionAdded = 0;
                 }
 
@@ -139,9 +142,12 @@ GameWank.prototype.mouseup = function(event) {
 GameWank.prototype.load = function() {
     this.background = new Sprite(this.bgFilename);
     this.objectSprite = new Sprite(this.objectFilename);
+    
     if (this.musicFilename !== null) {
         this.music = new Audio(this.musicFilename, true);
     }
+
+    this.soundRub = new Audio(['woodrub.ogg'], false);
 };
 
 GameWank.prototype.isFinished = function() {
