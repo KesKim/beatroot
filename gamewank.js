@@ -88,7 +88,8 @@ GameWank.prototype.mousemove = function(event) {
     if (this.clickHeld === true && this.stateMachine.state === 'started') {
         var currentPos = event.canvasCoords;
 
-        var xDistance = currentPos.x - this.lastWankPosition.x;
+        var lastX = this.lastWankPosition !== null ? 0 : this.lastWankPosition.x;
+        var xDistance = currentPos.x - lastX;
 
         var currentDirection = xDistance < 0 ? -1 : 1;
 
