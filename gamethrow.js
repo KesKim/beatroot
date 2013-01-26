@@ -266,7 +266,6 @@ GameThrow.prototype.load = function() {
     this.bg = new Sprite(this.urlImgBg);
     this.characterArmThrown = new Sprite(this.urlImgCharacterArmThrown);
     this.characterArmCharge = new Sprite(this.urlImgCharacterArmCharge);
-    this.enemy = new Sprite(this.urlImgEnemy);
     this.hitSfx = new Audio(this.hitSfxFilename);
     this.throwSfx = new Audio(this.throwSfxFilename);
 
