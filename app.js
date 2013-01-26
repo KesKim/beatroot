@@ -1,3 +1,5 @@
+var developerMode = true;
+
 var gameCanvas;
 var gameCtx;
 
@@ -48,6 +50,16 @@ GameSeries.prototype.toNextGame = function() {
         this.changeGame(this.games[this.gameIndex]);
     } else {
         console.log('Tried to progress beyond the last game');
+    }
+};
+
+GameSeries.prototype.toPreviousGame = function() {
+    this.gameIndex--;
+    if (this.gameIndex >= 0) {
+        this.changeGame(this.games[this.gameIndex]);
+    } else {
+        this.gameIndex = 0;
+        console.log('Tried to progress beyond the first game');
     }
 };
 
@@ -124,6 +136,23 @@ function init() {
 
     gameSeries = new GameSeries();
     gameSeries.loadAll();
+
+    if (developerMode) {
+        var gameChanger2 = document.createElement('input');
+        gameChanger2.type = 'button';
+        gameChanger2.value = 'Previous game';
+        gameChanger2.addEventListener('click', function() {
+            gameSeries.toPreviousGame();
+        });
+        document.body.appendChild(gameChanger2);
+        var gameChanger = document.createElement('input');
+        gameChanger.type = 'button';
+        gameChanger.value = 'Next game';
+        gameChanger.addEventListener('click', function() {
+            gameSeries.toNextGame();
+        });
+        document.body.appendChild(gameChanger);
+    }
 
     requestAnimationFrame(doFrame);
 }
