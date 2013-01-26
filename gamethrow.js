@@ -66,7 +66,7 @@ GameThrow.prototype.update = function(timeDelta) {
 };
 
 GameThrow.prototype.mousedown = function(event) {
-    if (event.canvasCoords.x > this.startPointX && event.canvasCoords.y < this.startPointY)
+    if (event.canvasCoords.x > 46 && event.canvasCoords.y < 366)
     {
         this.mouseDown = true;  
         this.mouseUp = false;
