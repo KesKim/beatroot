@@ -2,10 +2,11 @@ var GameObject = function(url, x, y) {
     this.posX = x;
     this.posY = y;
     this.velX = null;
-    this.velY = null;
+    this.velY = 1;
     this.accX = null;
     this.accY = null;
     this.sprite = null;
+    this.url = url;
 };
 
 GameObject.prototype.draw = function(canvas, ctx) {
@@ -13,9 +14,9 @@ GameObject.prototype.draw = function(canvas, ctx) {
 };
 
 GameObject.prototype.update = function(timeDelta) {
-    this.posX = Math.sin(time.current * 0.002) * 0.5 + 0.5;
+    this.posY += this.velY;
 };
 
-GameObject.prototype.load = function(url) {
-    this.sprite = new Sprite(url);
+GameObject.prototype.load = function() {
+    this.sprite = new Sprite(this.url);
 };
