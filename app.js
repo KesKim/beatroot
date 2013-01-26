@@ -141,8 +141,6 @@ GameSeries.prototype.update = function(timeDelta) {
             this.nextGame = null;
             this.fadeDelta = 2.0;
 
-            console.log('Fade end, game start');
-
             if (this.currentGame.startGame !== undefined) {
                 this.currentGame.startGame();
             }
