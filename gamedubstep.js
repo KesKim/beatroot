@@ -11,15 +11,17 @@ GameDubstep.prototype.draw = function(canvas, ctx) {
     
 };
 
-GameDubstep.prototype.createSlider = function(id, displayName) {
+GameDubstep.prototype.createSlider = function(parent, id, displayName) {
     if (displayName === undefined) {
         displayName = id;
     }
     var control = document.createElement('div');
+    parent.appendChild(control);
     var label = document.createElement('label');
     label.innerHTML = displayName;
     var input = document.createElement('input');
     input.type = 'range';
+    input.name = id;
     input.min = 0;
     input.max = 11;
     input.value = 11;
@@ -27,7 +29,6 @@ GameDubstep.prototype.createSlider = function(id, displayName) {
     control.appendChild(label);
     control.appendChild(input);
     control.appendChild(document.createTextNode('' + input.value));
-    return control;
 }
 
 GameDubstep.prototype.update = function(timeDelta) {
@@ -37,12 +38,12 @@ GameDubstep.prototype.update = function(timeDelta) {
             this.dubstepEditor = document.createElement('div');
             this.dubstepEditor.id = 'dubstepEditor';
             var title = document.createElement('h2');
-            title.innerHTML = 'Dubstep It Up';
+            title.innerHTML = 'DubstepMaker Creative 2017';
             this.dubstepEditor.appendChild(title);
-            this.dubstepEditor.appendChild(this.createSlider('WUB'));
-            this.dubstepEditor.appendChild(this.createSlider('AutoTune&trade;'));
-            document.body.appendChild(this.dubstepEditor);
+            this.createSlider(this.dubstepEditor, 'WUB');
+            this.createSlider(this.dubstepEditor, 'AutoTune&trade;');
             this.initialized = true;
+            document.body.appendChild(this.dubstepEditor);
         }
     }
 };
