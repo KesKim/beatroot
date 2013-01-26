@@ -1,13 +1,18 @@
 var GameWank = function() {
 	console.log('Initiating: GameWank. Shake mouse horizontally.');
-    this.isAnExample = false;
     this.background = null;
+    this.resetGame();
+};
+
+GameWank.prototype.resetGame = function() {
+    this.isAnExample = false;
     this.wankedAmount = 0;
     this.wankRequired = 1000;
     this.lastDirection = 0;
     this.oneDirectionAdded = 0;
     this.oneDirectionLimit = 50;
-};
+    this.lastWankPosition = null;
+}
 
 GameWank.prototype.draw = function(canvas, ctx) {
 	ctx.fillStyle = 'rgb(0, 0, 0)';
@@ -83,4 +88,5 @@ GameWank.prototype.isFinished = function() {
 };
 
 GameWank.prototype.cleanUp = function() {
+    this.resetGame();
 };
