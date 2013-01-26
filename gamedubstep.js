@@ -3,9 +3,7 @@ var GameDubstep = function() {
 };
 
 GameDubstep.prototype.draw = function(canvas, ctx) {
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+    this.bg.draw(ctx, 0, 0);
 };
 
 GameDubstep.prototype.createSlider = function(parent, id, displayName) {
@@ -25,7 +23,9 @@ GameDubstep.prototype.createSlider = function(parent, id, displayName) {
     input.disabled = 'disabled';
     control.appendChild(label);
     control.appendChild(input);
-    control.appendChild(document.createTextNode('' + input.value));
+    var span = document.createElement('span');
+    span.appendChild(document.createTextNode('' + input.value));
+    control.appendChild(span);
     return input;
 };
 
@@ -54,7 +54,7 @@ GameDubstep.prototype.update = function(timeDelta) {
             this.dubstepEditor = document.createElement('div');
             this.dubstepEditor.id = 'dubstepEditor';
             var title = document.createElement('h2');
-            title.innerHTML = 'DubstepMaker Creative 2017';
+            title.innerHTML = 'DubstepMaker Creative 2017 Trial Edition';
             this.dubstepEditor.appendChild(title);
             var expertSettings = this.createCheckbox(this.dubstepEditor, 'Expert settings');
             expertSettings.onclick = function() { 
@@ -76,6 +76,10 @@ GameDubstep.prototype.update = function(timeDelta) {
     }
     
     if (this.clicks > 10) {
+        if (this.dubstepEditor !== null && this.dubstepEditor !== undefined) {
+            document.body.removeChild(this.dubstepEditor);
+            this.dubstepEditor = null;
+        }
         this.finished = true;
     }
 };
@@ -90,7 +94,7 @@ GameDubstep.prototype.mouseup = function(event) {
 };
 
 GameDubstep.prototype.load = function() {
-    this.balls = new Sprite('350x150.gif');
+    this.bg = new Sprite('bg-dubstep.png');
 };
 
 GameDubstep.prototype.isFinished = function() {
