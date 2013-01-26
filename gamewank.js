@@ -1,5 +1,6 @@
 var GameWank = function() {
     this.background = null;
+    this.stickSprite = null;
     this.resetGame();
 };
 
@@ -14,12 +15,13 @@ GameWank.prototype.resetGame = function() {
 }
 
 GameWank.prototype.draw = function(canvas, ctx) {
-    ctx.fillStyle = 'rgb(0, 0, 0)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    //ctx.fillStyle = 'rgb(0, 0, 0)';
+    //ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    this.background.draw(ctx, 0, 0);
     var drawPosX = this.lastWankPosition ? this.lastWankPosition.x : (canvas.width / 2);
     var drawPosY = this.lastWankPosition ? this.lastWankPosition.y : (canvas.height / 2);
-    this.background.draw(ctx, drawPosX - (this.background.width / 2), drawPosY - (this.background.height / 2));
+    this.stickSprite.draw(ctx, drawPosX - (this.stickSprite.width / 2), drawPosY - (this.stickSprite.height / 2));
 
     ctx.fillStyle = 'red';
     ctx.fillText(this.wankedAmount, 10, 10);
@@ -76,7 +78,8 @@ GameWank.prototype.mouseup = function(event) {
 };
 
 GameWank.prototype.load = function() {
-    this.background = new Sprite('350x150.gif');
+    this.background = new Sprite('bg-jungle.png');
+    this.stickSprite = new Sprite('350x150.gif');
     this.music = new Audio(['dubstep_01.mp3']);
 };
 
