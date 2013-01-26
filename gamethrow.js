@@ -1,7 +1,13 @@
 var GameThrow = function() {
     this.throwable = null;
-    this.funk = null;
+    this.mouseDown = false;
+    this.mouseUp = true;
 };
+
+GameThrow.prototype.resetGame = function() {
+    this.throwable = null;
+    this.load();
+}
 
 GameThrow.prototype.draw = function(canvas, ctx) {
     ctx.fillStyle = 'rgb(' + Math.round(this.funk * 255) + ', 0, 0)';
@@ -15,12 +21,20 @@ GameThrow.prototype.update = function(timeDelta) {
 };
 
 GameThrow.prototype.mousedown = function(event) {
+    this.mouseDown = true;
 };
 
 GameThrow.prototype.mousemove = function(event) {
 };
 
 GameThrow.prototype.mouseup = function(event) {
+    if (this.mouseDown === true)
+    {
+        this.mouseDown = false;
+        this.load();
+    }
+
+    this.mouseUp = true;
 };
 
 GameThrow.prototype.load = function() {
@@ -30,4 +44,8 @@ GameThrow.prototype.load = function() {
 
 GameThrow.prototype.isFinished = function() {
     return false;
+};
+
+GameThrow.prototype.cleanUp = function() {
+    this.resetGame();
 };
