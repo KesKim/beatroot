@@ -1,4 +1,12 @@
-var GameObject = function(url, x, y) {
+var GameObject = function(url, x, y, rotateAccordingToVelocity, scale) {
+    if (rotateAccordingToVelocity === undefined) {
+        rotateAccordingToVelocity = true;
+    }
+    if (scale === undefined) {
+        scale = 1.0;
+    }
+    this.rotateVel = rotateAccordingToVelocity;
+    this.scale = scale;
     this.posX = x;
     this.posY = y;
     this.velX = 0;
@@ -11,20 +19,23 @@ var GameObject = function(url, x, y) {
     this.rotation = 0;
 };
 
-GameObject.prototype.calculateRotationAccordingToVelocity = function()
-{
+GameObject.prototype.calculateRotationAccordingToVelocity = function() {
     return Math.atan(this.velY / this.velX);
 };
 
 GameObject.prototype.draw = function(canvas, ctx) {
-    this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation);
+    this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation, this.scale);
 };
 
 GameObject.prototype.update = function(timeDelta) {
     this.velY += (this.gravity * (timeDelta / 16));
     this.posY += (this.velY * (timeDelta / 16));
     this.posX += (this.velX * (timeDelta / 16));
-    this.rotation = this.calculateRotationAccordingToVelocity();
+    if (this.rotateVel) {
+        this.rotation = this.calculateRotationAccordingToVelocity();
+    } else {
+        this.rotation += timeDelta * 0.001;
+    }
 };
 
 GameObject.prototype.load = function() {

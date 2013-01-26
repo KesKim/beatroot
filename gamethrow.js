@@ -1,8 +1,9 @@
-var GameThrow = function(urlProjectile, urlBg, urlCharacterArmThrown, urlCharacterArmCharge) {
+var GameThrow = function(urlProjectile, urlBg, urlCharacterArmThrown, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint) {
     this.mouseDown = false;
     this.mouseUp = true;
     this.powerMeter = 0;
     this.throwableArray = [];
+    this.enemyArray = [];
     this.bg = null;
     this.urlImgBg = urlBg;
     this.coordinates = null;
@@ -22,11 +23,17 @@ var GameThrow = function(urlProjectile, urlBg, urlCharacterArmThrown, urlCharact
     this.throwDelay = 1000;
     this.urlImgProjectile = urlProjectile;
     this.deltaTimeDebug = 0;
+    this.enemyTurnpoint1 = enemyStartpoint;
+    this.enemyTurnpoint2 = enemyEndpoint;
+    this.urlImgEnemy = urlEnemy;
+    this.enemy = null;
+    this.enemyOnScreen = false;
 };
 
 GameThrow.prototype.resetGame = function() {
     // Clear the projectile array
     this.throwableArray = [];
+    this.enemyArray = [];
 }
 
 GameThrow.prototype.draw = function(canvas, ctx) {
@@ -36,6 +43,11 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     // Draw projectiles
     for (var i = this.throwableArray.length - 1; i >= 0; i--) {
         this.throwableArray[i].draw(canvas, ctx);
+    };
+
+    // Draw enemies
+    for (var i = this.enemyArray.length - 1; i >= 0; i--) {
+        this.enemyArray[i].draw(canvas, ctx);
     };
 
 
@@ -91,6 +103,18 @@ GameThrow.prototype.update = function(timeDelta) {
         this.throwableArray[i].update(timeDelta);
     };
 
+    // Update enemies
+    for (var j = this.enemyArray.length - 1; j >= 0; j--) {
+       this.enemyArray[j].update(timeDelta);
+    };
+
+    for (var k = this.throwableArray.length - 1; k >= 0; k--) {
+        for (var l = this.enemyArray.length - 1; l >= 0; l--) {
+            var proj = this.throwableArray[k];
+            this.enemyArray[l].isColliding(proj.posX, proj.posY);
+        };
+    };
+
     // Charge throw power
     if (this.mouseDown)
     {
@@ -98,6 +122,22 @@ GameThrow.prototype.update = function(timeDelta) {
         {
             this.powerMeter += 0.5; 
         }
+    }
+
+    if (this.enemyArray.length > 0)
+    {
+        this.enemyOnScreen = true;
+    }
+
+    if (!this.enemyOnScreen)
+    {
+        var newEnemy = new Enemy(this.urlImgEnemy, 0, 40);
+        newEnemy.load();
+        this.enemyArray.push(newEnemy);
+    }
+    else
+    {
+
     }
 
     // Add the elapsed time to the timer
@@ -163,6 +203,7 @@ GameThrow.prototype.load = function() {
     this.bg = new Sprite(this.urlImgBg);
     this.characterArmThrown = new Sprite(this.urlImgCharacterArmThrown);
     this.characterArmCharge = new Sprite(this.urlImgCharacterArmCharge);
+    this.enemy = new Sprite(this.urlImgEnemy);
 };
 
 GameThrow.prototype.isFinished = function() {
