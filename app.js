@@ -26,24 +26,43 @@ var GameSeries = function() {
     this.toNextGame();
     
     var that = this;
-    gameCanvas.addEventListener('mousedown', function(ev) {
+    
+    var mouseDown = function(ev) {
         if (that.currentGame !== null) {
             ev.canvasCoords = getRelativeCoords(ev, gameCanvas);
             that.currentGame.mousedown(ev);
         }
-    });
-    gameCanvas.addEventListener('mousemove', function(ev) {
+        ev.preventDefault();
+    };
+    var mouseMove = function(ev) {
         if (that.currentGame !== null) {
             ev.canvasCoords = getRelativeCoords(ev, gameCanvas);
             that.currentGame.mousemove(ev);
         }
-    });
-    gameCanvas.addEventListener('mouseup', function(ev) {
+        ev.preventDefault();
+    };
+    var mouseUp = function(ev) {
         if (that.currentGame !== null) {
             ev.canvasCoords = getRelativeCoords(ev, gameCanvas);
             that.currentGame.mouseup(ev);
         }
-    });
+        ev.preventDefault();
+    };
+    var mouseOut = function(ev) {
+        if (ev.relatedTarget !== undefined && (ev.relatedTarget === gameCanvas || ev.relatedTarget === gameCanvasContainer)) {
+            ev.preventDefault();
+            return;
+        }
+        if (that.currentGame !== null) {
+            ev.canvasCoords = getRelativeCoords(ev, gameCanvas);
+            that.currentGame.mouseup(ev);
+        }
+        ev.preventDefault();
+    };
+    gameCanvasContainer.addEventListener('mousedown', mouseDown);
+    gameCanvasContainer.addEventListener('mousemove', mouseMove);
+    gameCanvasContainer.addEventListener('mouseup', mouseUp);
+    gameCanvasContainer.addEventListener('mouseout', mouseOut);
 };
 
 GameSeries.prototype.toNextGame = function(doFade) {
@@ -140,12 +159,15 @@ function doFrame() {
 }
 
 function init() {
+    gameCanvasContainer = document.createElement('div');
+    gameCanvasContainer.id = 'gameContainer';
     gameCanvas = document.createElement('canvas');
     gameCanvas.id = 'game';
     gameCanvas.width = 640;
     gameCanvas.height = 480;
     gameCtx = gameCanvas.getContext('2d');
-    document.body.appendChild(gameCanvas);
+    gameCanvasContainer.appendChild(gameCanvas);
+    document.body.appendChild(gameCanvasContainer);
     startTime = Date.now(); 
     lastFrameTime = Date.now();
 

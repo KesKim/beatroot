@@ -36,3 +36,8 @@ canvas#game {
     display: inline-block;
     width: 100px;
 }
+
+#gameContainer {
+    margin: -100px 0;
+    padding: 100px 0;
+}
