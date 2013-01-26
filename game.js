@@ -8,7 +8,6 @@ var Game = function() {
     this.arrow = null;
     this.dialog = null;
     this.progress = null;
-    this.objects = [];
 };
 
 Game.prototype.draw = function(canvas, ctx) {
@@ -133,4 +132,5 @@ Game.prototype.startGame = function() {
     this.arrowFade = 0.0;
     this.basketX = 320;
     this.rootDensity = 0.0;
+    this.objects = [];
 };
