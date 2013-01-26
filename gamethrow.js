@@ -21,12 +21,11 @@ var GameThrow = function(focusPoint, dialogLines, urlMusic, progressTitleString,
     this.characterArmCharge = null;
     this.throwDelayElapsed = 0;
     this.throwDelay = 500;
-    this.urlImgProjectile = urlProjectile;
+    this.projectile = new Sprite(urlProjectile);
     this.deltaTimeDebug = 0;
     this.enemyTurnpoint1 = enemyStartpoint;
     this.enemyTurnpoint2 = enemyEndpoint;
-    this.urlImgEnemy = urlEnemy;
-    this.enemy = null;
+    this.enemySprite = new Sprite(urlEnemy);
     this.enemyOnScreen = false;
     this.projectilePositionX = 0;
     this.projectilePositionY = 0;
@@ -168,8 +167,7 @@ GameThrow.prototype.update = function(timeDelta) {
 
         if (!this.enemyOnScreen)
         {
-            var newEnemy = new Enemy(this.urlImgEnemy, -100, 70);
-            newEnemy.load();
+            var newEnemy = new Enemy(this.enemySprite, -100, 70);
             this.enemyArray.push(newEnemy);
         }
         
@@ -232,8 +230,7 @@ GameThrow.prototype.mouseup = function(event) {
             this.mouseDown = false;
 
             // Create new projectile
-            var throwableItem = new GameObject(this.urlImgProjectile, this.startPoint.x, this.startPoint.y);
-            throwableItem.load();
+            var throwableItem = new GameObject(this.projectile, this.startPoint.x, this.startPoint.y);
             throwableItem.velX = this.powerMeter * Math.cos(angle);
             throwableItem.velY = this.powerMeter * Math.sin(angle);
 
@@ -262,7 +259,6 @@ GameThrow.prototype.load = function() {
     this.bg = new Sprite(this.urlImgBg);
     this.characterArmThrown = new Sprite(this.urlImgCharacterArmThrown);
     this.characterArmCharge = new Sprite(this.urlImgCharacterArmCharge);
-    this.enemy = new Sprite(this.urlImgEnemy);
 
     if (this.musicFilename !== null) {
         this.music = new Audio(this.musicFilename);

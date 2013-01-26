@@ -3,6 +3,7 @@ var Game = function() {
     this.funk = 0;
     this.bg = null;
     this.beatRoot = null;
+    this.beatRootSmall = null;
     this.basket = null;
     this.arrow = null;
     this.dialog = null;
@@ -75,11 +76,10 @@ Game.prototype.update = function(timeDelta) {
             }
         }
         if (!this.progress.finished && Math.random() < timeDelta * 0.01 * Math.pow(this.rootDensity, 1.5)) {
-            var newObj = new GameObject('beatroot-small.png', Math.random() * (gameCanvas.width - 30) + 15, -50.0 - Math.random() * 50.0, false, 1.0);
+            var newObj = new GameObject(this.beatRootSmall, Math.random() * (gameCanvas.width - 30) + 15, -50.0 - Math.random() * 50.0, false, 1.0);
             newObj.gravity = 0.01;
             newObj.velY = 0;
             newObj.rotation = Math.random() * Math.PI * 2;
-            newObj.load();
             this.objects.push(newObj);
         }
         if (this.progress.finished && this.stateMachine.state === 'dropping-modern') {
@@ -106,6 +106,7 @@ Game.prototype.load = function() {
     this.beatRoot = new Sprite('beatroot-big.png');
     this.basket = new Sprite('basket.png');
     this.arrow = new Sprite('arrow.png');
+    this.beatRootSmall = new Sprite('beatroot-small.png');
 };
 
 Game.prototype.isFinished = function() {
