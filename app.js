@@ -16,7 +16,7 @@ var GameSeries = function() {
     this.games = [
         new GameDubstep(),
         new GameWank('Satiation', 3000, jungleDialog, null, 'bg-jungle.png', '350x150.gif', new Vec2(320, 160), false, true),
-        new GameThrow(),
+        new GameThrow('spear.png','bg-ancient.png','thrown.png','spearthrow.png'),
         new Game()
     ];
     this.fade = 0.0;
