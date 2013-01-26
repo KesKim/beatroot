@@ -8,3 +8,31 @@ canvas#game {
     display: block;
     margin: auto;
 }
+
+#dubstepEditor {
+    position: relative;
+    background: #fff;
+    top: -480px;
+    width: 500px;
+    margin: auto;
+    color: #000;
+    border: 2px outset;
+    padding: 1px;
+    padding-bottom: 15px;
+    font-family: sans-serif;
+    font-size: 80%;
+}
+
+#dubstepEditor h2 {
+    width: 490px;
+    padding: 2px 5px;
+    font-size: 100%;
+    background: #44f;
+    margin-top: 0;
+    text-align: left;
+}
+
+#dubstepEditor label {
+    display: inline-block;
+    width: 100px;
+}

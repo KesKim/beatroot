@@ -13,6 +13,7 @@ var game = null;
 
 var GameSeries = function() {
     this.games = [
+        new GameDubstep(),
         new GameWank(),
         new GameThrow(),
         new Game()
@@ -73,6 +74,9 @@ GameSeries.prototype.changeGame = function(to, doFade) {
         this.fadeDelta = -2.0;
     } else {
         this.nextGame = null;
+        if (this.currentGame.cleanUp !== undefined) {
+            this.currentGame.cleanUp();
+        }
         this.currentGame = to;
         this.fade = 1.0;
         this.fadeDelta = 0.0;
