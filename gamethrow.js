@@ -1,4 +1,4 @@
-var GameThrow = function(focusPoint, dialogLines, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint) {
+var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialogLines, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint) {
     this.mouseDown = false;
     this.mouseUp = true;
     this.powerMeter = 0;
@@ -37,6 +37,10 @@ var GameThrow = function(focusPoint, dialogLines, urlMusic, progressTitleString,
     this.stateMachine = null;
     this.canvasWidth = 0;
     this.focus = focusPoint;
+    this.throwSfxFilename = throwSfxFilename;
+    this.hitSfxFilename = hitSfxFilename;
+    this.hitSfx = null;
+    this.throwSfx = null;
     this.resetGame();
 };
 
@@ -131,6 +135,7 @@ GameThrow.prototype.update = function(timeDelta) {
             {
                 this.enemyArray.pop();
                 this.progress.add(0.45);
+                this.hitSfx.play();
             }
         };
 
@@ -231,6 +236,9 @@ GameThrow.prototype.mouseup = function(event) {
 
             // Create new projectile
             var throwableItem = new GameObject(this.projectile, this.startPoint.x, this.startPoint.y);
+            this.throwSfx.play();
+            throwableItem.load();
+
             throwableItem.velX = this.powerMeter * Math.cos(angle);
             throwableItem.velY = this.powerMeter * Math.sin(angle);
 
@@ -259,6 +267,9 @@ GameThrow.prototype.load = function() {
     this.bg = new Sprite(this.urlImgBg);
     this.characterArmThrown = new Sprite(this.urlImgCharacterArmThrown);
     this.characterArmCharge = new Sprite(this.urlImgCharacterArmCharge);
+    this.enemy = new Sprite(this.urlImgEnemy);
+    this.hitSfx = new Audio(this.hitSfxFilename);
+    this.throwSfx = new Audio(this.throwSfxFilename);
 
     if (this.musicFilename !== null) {
         this.music = new Audio(this.musicFilename);
