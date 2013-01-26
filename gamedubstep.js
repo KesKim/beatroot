@@ -120,3 +120,8 @@ GameDubstep.prototype.cleanUp = function() {
         this.music.stop();
     }
 };
+
+GameDubstep.prototype.startGame = function() {
+    this.music.play();
+    console.log('Starting DubstepGame.');
+}
