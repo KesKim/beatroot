@@ -18,7 +18,6 @@ Game.prototype.update = function(timeDelta) {
 };
 
 Game.prototype.mousedown = function(event) {
-    console.log('mousedown', event.canvasCoords.x, event.canvasCoords.y);
     this.dialog.click();
 };
 
