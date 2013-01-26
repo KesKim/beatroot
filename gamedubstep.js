@@ -63,12 +63,16 @@ GameDubstep.prototype.update = function(timeDelta) {
                 that.clicks++; };
             this.createSlider(this.dubstepEditor, 'WUB');
             this.createSlider(this.dubstepEditor, 'AutoTune&trade;');
+            
             var butan = document.createElement('input');
             butan.type = 'button';
             butan.value = 'Create dubstep';
             butan.onclick = function() {
                 that.clicks++;
+                that.music.stop();
+                that.music.play();
             };
+
             this.dubstepEditor.appendChild(butan);
             this.initialized = true;
             document.body.appendChild(this.dubstepEditor);
@@ -96,6 +100,7 @@ GameDubstep.prototype.mouseup = function(event) {
 
 GameDubstep.prototype.load = function() {
     this.bg = new Sprite('bg-dubstep.png');
+    this.music = new Audio(['dubstep_01.mp3']);
 };
 
 GameDubstep.prototype.isFinished = function() {
@@ -111,4 +116,7 @@ GameDubstep.prototype.cleanUp = function() {
     this.initTimer = 0;
     this.clicks = 0;
     this.finished = false;
+    if ( this.music != null ) {
+        this.music.stop();
+    }
 };
