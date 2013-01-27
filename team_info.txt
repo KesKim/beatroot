@@ -1,0 +1,11 @@
+=== PLEASE NOTE
+Only download the files 'Beatroot.zip' and this file from repository root for GGJ upload.
+
+=== GAME NAME (As setup on the globalgamejam.org for 2013)
+Beatroot
+
+=== TEAM USER NAMES
+Lunic (code)
+Hectigo (code, art)
+Kepab (code)
+Loigor (music, audio)
