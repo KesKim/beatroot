@@ -8,11 +8,12 @@ var Game = function(dialog) {
     this.arrow = null;
     this.dialog = dialog;
     this.progress = null;
+    this.credits = null;
+    this.creditsAlpha = 0.0;
     this.music = null;
     this.musicFilename = ['dubstep_good.ogg'];
     this.bgProgression = 0;
     this.basketSound = null;
-
 
     this.fadeDelta = 0;
     this.fadeBackgrounds = 0;
@@ -20,12 +21,14 @@ var Game = function(dialog) {
 
 Game.prototype.draw = function(canvas, ctx) {
 
+    var basketAlpha = (1.0 - this.beatRootOpacity) * (1.0 - this.creditsAlpha);
+
     this.bg.draw(ctx, 0, 0);
     ctx.globalAlpha = this.beatRootOpacity;
     ctx.fillStyle = 'rgb(' + Math.round(this.funk * 20) + ', 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     this.beatRoot.drawRotated(ctx, canvas.width * 0.5, canvas.height * 0.5, this.funk * 0.5 - 0.25, this.funk * 0.5 + 1.0);
-    ctx.globalAlpha = 1.0 - this.beatRootOpacity;
+    ctx.globalAlpha = basketAlpha;
     this.basketBack.drawRotated(ctx, this.basketX, gameCanvas.height - 35, 0.0, 0.8);
     ctx.globalAlpha = 1.0;
     if (this.stateMachine.state !== 'dialog') {
@@ -34,14 +37,18 @@ Game.prototype.draw = function(canvas, ctx) {
             this.objects[i].draw(canvas, ctx);
         }
     }
-    ctx.globalAlpha = (1.0 - this.beatRootOpacity) * this.basketGlowMult;
+    ctx.globalAlpha = basketAlpha * this.basketGlowMult;
     this.basketGlow.drawRotated(ctx, this.basketX, gameCanvas.height - 35, 0.0, 0.8);
-    ctx.globalAlpha = 1.0 - this.beatRootOpacity;
+    ctx.globalAlpha = basketAlpha;
     this.basket.drawRotated(ctx, this.basketX, gameCanvas.height - 35, 0.0, 0.8);
     ctx.globalAlpha = (0.5 - Math.abs(0.5 - this.arrowFade)) * 2.0;
     this.arrow.drawRotated(ctx, this.basketX, gameCanvas.height - 100 - Math.sin(this.arrowFade * 40.0) * 10.0, 0.0, 1.0);
     ctx.globalAlpha = 1.0;
     this.dialog.draw(ctx, 320, 420, true);
+    
+    ctx.globalAlpha = this.creditsAlpha;
+    this.credits.draw(ctx, 0, 0);
+    ctx.globalAlpha = 1.0;
 };
 
 Game.prototype.update = function(timeDelta) {
@@ -126,8 +133,12 @@ Game.prototype.update = function(timeDelta) {
             newObj.rotation = Math.random() * Math.PI * 2;
             this.objects.push(newObj);
         }
-        if (this.progress.finished && this.stateMachine.state === 'dropping-modern') {
-            this.advanceState();
+        if (this.progress.finished && this.stateMachine.state === 'dropping') {
+            this.stateMachine.advance();
+        }
+        if (this.stateMachine.state === 'finished' && this.objects.length === 0) {
+            this.creditsAlpha += timeDelta * 0.0005;
+            this.creditsAlpha = Math.min(this.creditsAlpha, 1.0);
         }
     }
 };
@@ -154,6 +165,7 @@ Game.prototype.load = function() {
     this.arrow = new Sprite('arrow.png');
     this.beatRootSmall = new Sprite('beatroot-small.png');
     this.basketSound = new Audio(['beatroot-bling.ogg'], false)
+    this.credits = new Sprite('credits.png');
 
     if (this.musicFilename !== null) {
         this.music = new Audio(this.musicFilename, true);
@@ -178,7 +190,7 @@ Game.prototype.startGame = function() {
 	this.dialog.reset();
 
     this.dialog.start();
-    this.stateMachine = new StateMachine(['dialog', 'dropping-jungle', 'dropping-modern', 'finished']);
+    this.stateMachine = new StateMachine(['dialog', 'dropping', 'finished']);
     this.progress = new Progress('Funk', 0.0, 0.0);
     this.beatRootOpacity = 1.0;
     this.arrowFade = 0.0;
