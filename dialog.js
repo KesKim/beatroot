@@ -7,7 +7,6 @@ var Dialog = function(lines, keepLastVisible) {
     if (this.keepLastVisible && this.lines.length > 0) {
         this.lines.push(this.lines[this.lines.length - 1]); // Duplicate the last line so that the user still needs to confirm with click
     }
-    this.currentLine = -1;
     this.minChangeInterval = 500;
     this.reset();
 };
@@ -17,6 +16,7 @@ Dialog.prototype.reset = function() {
     this.lastChangeTime = 0;
     this.finished = false;
     this.started = false;
+    this.currentLine = -1;
 };
 
 Dialog.prototype.click = function() {
