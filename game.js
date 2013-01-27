@@ -180,7 +180,7 @@ Game.prototype.load = function() {
 };
 
 Game.prototype.isFinished = function() {
-    return this.stateMachine.state === 'finished';
+    return false;
 };
 
 Game.prototype.cleanUp = function() {
