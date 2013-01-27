@@ -18,12 +18,17 @@ var GameSeries = function() {
     var ancientHitSfx = ['lintuosuma.ogg'];
     var ancientThrowSfx = ['keihas.ogg'];
     var ancientMusic = ['metsastys.ogg'];
+    var franceDialog = ['Lololol.','Lol.'];
+    var franceHitSfx = ['lintuosuma.ogg'];
+    var franceThrowSfx = ['keihas.ogg'];
+    var franceMusic = ['metsastys.ogg'];
 
     this.games = [
         new GameDubstep(),
         new GameWank('Street cred', 1000, rockDialog, ['jungle.ogg'], 'bg-rock.png', 'comb.png', new Vec2(400, 180), 0, 100, ['comb.ogg']),
+        new GameThrow(franceThrowSfx, franceHitSfx, new Vec2(320, 160), franceDialog, franceMusic, 'Decadence', 'bottle.png', 'bg-bohemian.png', 'thrown.png', 'bottlethrow.png', 'bird.png', 300, 300),
         new GameWank('Ignition', 5000, jungleDialog, ['jungle.ogg'], 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0, ['woodrub.ogg']),
-        new GameThrow(ancientThrowSfx, ancientHitSfx ,new Vec2(320, 160), ancientDialog, ancientMusic, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png','spearthrow.png','bird.png'),
+        new GameThrow(ancientThrowSfx, ancientHitSfx, new Vec2(320, 160), ancientDialog, ancientMusic, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png','spearthrow.png','bird.png', -100, 70),
         new Game()
     ];
 

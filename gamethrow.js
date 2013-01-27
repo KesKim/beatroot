@@ -172,7 +172,7 @@ GameThrow.prototype.update = function(timeDelta) {
 
         if (!this.enemyOnScreen)
         {
-            var newEnemy = new Enemy(this.enemySprite, -100, 70);
+            var newEnemy = new Enemy(this.enemySprite, this.enemyTurnpoint1, this.enemyTurnpoint2);
             this.enemyArray.push(newEnemy);
         }
         
