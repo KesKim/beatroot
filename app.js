@@ -12,10 +12,10 @@ var time = {
 var game = null;
 
 var GameSeries = function() {
-    var dubstepDialogLines = ['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives...', '... and find the the origin of all beats.', 'The BEATROOT.', new DialogLine('STORY TRANSITION BIT')];
-    var rockDialogLines = ["I'm so cool.", "But I'm no King.", 'I lack the... ', new DialogLine('FIRE of passion.')];
-    var franceDialogLines = ['Lololol.', new DialogLine('Lol.')];
-    var jungleDialogLines = ['...', 'I feel like my life should have a higher purpose.', new DialogLine('I gotta go deeper.')];
+    var dubstepDialogLines = ['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives...', '... and find the the origin of all beats.', 'The BEATROOT.', new DialogLine('HIS MIND TRAVELS TO THE 1950s...')];
+    var rockDialogLines = ["I'm so cool.", "But I'm no King.", 'I lack the... ', 'FIRE of passion.', new DialogLine('THE ART MUST LIE IN HIS ANCESTRY.'), new DialogLine('MAYBE A BOHEMIAN ANCESTOR?')];
+    var franceDialogLines = ["I've hit rock bottom.", "How can I create when I'm so low?", new DialogLine('HIS BLOODLINE NEEDS THE MUSIC. THE RHYTHM.')];
+    var jungleDialogLines = ['...', 'I feel like my life should have a higher purpose.', new DialogLine('HE MUST GO DEEPER.')];
     var ancientDialogLines = ['Oh my word!', 'What IS that in the distance?', 'It\'s getting closer!'];
     var endDialogLines = [new DialogLine('YOU HAVE FOUND ME.'), new DialogLine('I AM THE BEATROOT OF INSPIRATION.'), 'Nice to meet you.', 'From now on, things are going to get a lot more funky.', 'Use your powers wisely.'];
 
