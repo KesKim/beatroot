@@ -235,11 +235,11 @@ GameThrow.prototype.mousemove = function(event) {
 GameThrow.prototype.generateThrowable = function(mouseCoords) {
     // Calculate the angle of attack
     var angle = Math.atan((this.armPoint.y - mouseCoords.y) / (this.armPoint.x - mouseCoords.x));
-    if (angle > 0) {
-        angle = 0;
-    }
     if (angle < -1.3) {
         angle = -1.3;
+    }
+    if (angle > -0.4) {
+        angle = -0.4;
     }
     // Create new projectile
     var throwableItem = new GameObject(this.projectile, this.startPoint.x, this.startPoint.y);
