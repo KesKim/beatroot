@@ -1,4 +1,4 @@
-var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialogLines, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint) {
+var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialogLines, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, armPosX, armPosY, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint, enemyHeight, moveEnemy, progressAddAmount) {
     this.mouseDown = false;
     this.mouseUp = true;
     this.powerMeter = 0;
@@ -12,7 +12,7 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialogLin
     this.angleRadians = 0;
     this.armRotation = -0.5;
     this.startPoint = new Vec2(80, 300);
-    this.armPoint = new Vec2(47, 366);
+    this.armPoint = new Vec2(armPosX, armPosY);
     this.startPointX = 125;
     this.startPointY = 310;
     this.urlImgCharacterArmThrown = urlCharacterArmThrown;
@@ -41,6 +41,9 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialogLin
     this.hitSfxFilename = hitSfxFilename;
     this.hitSfx = null;
     this.throwSfx = null;
+    this.moveEnemy = moveEnemy;
+    this.enemyHeight = enemyHeight;
+    this.progressAddAmount = progressAddAmount;
     this.resetGame();
 };
 
@@ -130,11 +133,11 @@ GameThrow.prototype.update = function(timeDelta) {
 
         // Update enemies
         for (var j = this.enemyArray.length - 1; j >= 0; j--) {
-            this.enemyArray[j].update(timeDelta, 0, this.canvasWidth);
+            this.enemyArray[j].update(timeDelta, this.enemyTurnpoint1, this.enemyTurnpoint2);
             if (this.enemyArray[j].destroyed)
             {
                 this.enemyArray.pop();
-                this.progress.add(0.45);
+                this.progress.add(this.progressAddAmount);
                 this.hitSfx.play();
             }
         };
@@ -172,7 +175,7 @@ GameThrow.prototype.update = function(timeDelta) {
 
         if (!this.enemyOnScreen)
         {
-            var newEnemy = new Enemy(this.enemySprite, this.enemyTurnpoint1, this.enemyTurnpoint2);
+            var newEnemy = new Enemy(this.enemySprite, this.enemyTurnpoint1, this.enemyHeight, this.moveEnemy);
             this.enemyArray.push(newEnemy);
         }
         

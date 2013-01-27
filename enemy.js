@@ -1,4 +1,4 @@
-var Enemy = function(sprite, x, y) {
+var Enemy = function(sprite, x, y, moveEnemy) {
     this.posX = x;
     this.posY = y;
     this.velX = 3;
@@ -12,6 +12,7 @@ var Enemy = function(sprite, x, y) {
     this.circleRadius = 25;
     this.collides = false;
     this.destroyed = false;
+    this.movingEnemy = moveEnemy;
 };
 
 Enemy.prototype.draw = function(canvas, ctx) {
@@ -43,23 +44,27 @@ Enemy.prototype.isColliding = function(x, y)
 }
 
 Enemy.prototype.update = function(timeDelta, start, end) {
-    if (this.posX < end && this.moveForward)
-    {
-        this.moveForward = true;
-        this.posX += (this.velX * (timeDelta / 16));
-    }
-    else if (this.posX < start && !this.moveForward)
-    {
-        this.moveForward = true;
-    }
-    else
-    {
-        this.moveForward = false;
-        this.posX -= (this.velX * (timeDelta / 16));
-    }
 
-    // TODO: Does not work
-    this.posY += this.goToSineY(1,100);
+    if (this.movingEnemy)
+    {
+        if (this.posX < end && this.moveForward)
+        {
+            this.moveForward = true;
+            this.posX += (this.velX * (timeDelta / 16));
+        }
+        else if (this.posX < start && !this.moveForward)
+        {
+            this.moveForward = true;
+        }
+        else
+        {
+            this.moveForward = false;
+            this.posX -= (this.velX * (timeDelta / 16));
+        }
+
+        // TODO: Does not work
+        this.posY += this.goToSineY(1,100);
+    }
 };
 
 Enemy.prototype.goToSineY = function(amplitude, frequency, time)
