@@ -1,4 +1,4 @@
-var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename, bgFilename, objectFilename, focusPoint, xLimit, yLimit, rubSounds, progressDecayRate) {
+var GameWank = function(progressTitle, wankRequired, dialog, musicFilename, bgFilename, objectFilename, focusPoint, xLimit, yLimit, rubSounds, progressDecayRate) {
     if (xLimit === undefined) {
         xLimit = 320;
     }
@@ -7,7 +7,7 @@ var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename,
     }
     this.progressTitle = progressTitle;
     this.wankRequired = wankRequired;
-    this.dialogLines = dialogLines;
+    this.dialog = dialog;
     this.musicFilename = musicFilename;
     this.bgFilename = bgFilename;
     this.objectFilename = objectFilename;
@@ -30,7 +30,7 @@ GameWank.prototype.resetGame = function() {
     this.oneDirectionAdded = 0;
     this.oneDirectionLimit = 40;
     this.lastWankPosition = null;
-    this.dialog = new Dialog(this.dialogLines);
+    this.dialog.reset();
     this.progress = new Progress(this.progressTitle, 0.0, 0.0, this.progressDecayRate);
     this.stateMachine = new StateMachine(['started', 'quit', 'dialog', 'finished']);
     this.drawPos = new Vec2(this.focus.x, this.focus.y);

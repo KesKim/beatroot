@@ -1,5 +1,12 @@
-var Dialog = function(lines) {
+var Dialog = function(lines, keepLastVisible) {
+    if (keepLastVisible === undefined) {
+        keepLastVisible = false;
+    }
+    this.keepLastVisible = keepLastVisible;
     this.lines = lines;
+    if (this.keepLastVisible && this.lines.length > 0) {
+        this.lines.push(this.lines[this.lines.length - 1]); // Duplicate the last line so that the user still needs to confirm with click
+    }
     this.currentLine = -1;
     this.minChangeInterval = 500;
     this.reset();
@@ -9,11 +16,7 @@ Dialog.prototype.reset = function() {
     this.time = 0;
     this.lastChangeTime = 0;
     this.finished = false;
-    this.started = false;    
-    this.opacityReduction = 0.0;
-    this.fadeInSecondsRemaining = 0.0;
-    this.opacity = 0.0;
-    this.fadeWhenChangingLine = false;
+    this.started = false;
 };
 
 Dialog.prototype.click = function() {
@@ -28,21 +31,6 @@ Dialog.prototype.start = function() {
 Dialog.prototype.update = function(timeDelta) {
     this.time += timeDelta;
 
-    // Fade handling.
-    if ( this.fadeInSecondsRemaining > 0.0 ) {
-        this.fadeInSecondsRemaining -= timeDelta;
-
-        var opacityPercent = this.fadeInSecondsRemaining / this.originalFadeDuration;
-
-        if ( opacityPercent < 0.0 ) {
-            opacityPercent = 0.0;
-        }
-
-        this.opacity = opacityPercent;
-    } else if ( this.fadeInSecondsRemaining <= 0.0 ) {
-        this.fadeInSecondsRemaining = 0.0;
-    }
-
     // Advancement handling and timing limiters.
     if (this.clicked && !this.finished) {
         this.clicked = false;
@@ -56,21 +44,13 @@ Dialog.prototype.draw = function(ctx, x, y, centered) {
     if (centered === undefined) {
         centered = false;
     }
-    if (!this.finished && this.started) {
+    if (this.currentLine < this.lines.length && this.started) {
         var nextLine = this.lines[this.currentLine];
-        var doBlankScreen = (typeof nextLine != 'string');
-
-        if ( doBlankScreen === true )
-        {
+        if (typeof nextLine !== 'string') {
             ctx.fillStyle = nextLine.blankScreenColor;
-
             ctx.globalAlpha = this.opacity;
             ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-
-            nextLine = nextLine.text;
-        } else if ( this.fadeInSecondsRemaining ) {
-            ctx.globalAlpha = this.opacity;
-            ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+            nextLine = nextLine.text;            
         }
 
         ctx.font = '18px sans-serif';
@@ -90,46 +70,10 @@ Dialog.prototype.draw = function(ctx, x, y, centered) {
 
 Dialog.prototype.advance = function() {
     this.currentLine++;
-    if (this.currentLine >= this.lines.length) {
+    if (this.currentLine >= this.lines.length || (this.currentLine >= this.lines.length - 1 && this.keepLastVisible)) {
         this.finished = true;
-        this.currentLine--;
     }
-
-    if ( this.fadeWhenChangingLine ) {
-        this.fadeWhenChangingLine = false;
-
-        // Start a fade.
-        this.originalFadeDuration = 2.5 * 1000.0;
-        this.fadeInSecondsRemaining = 2.5 * 1000.0;
-        this.opacity = 1.0;
+    if (this.keepLastVisible) {
+        this.currentLine = Math.min(this.currentLine, this.lines.length - 1);
     }
-
-    this.checkForFade();
 };
-
-Dialog.prototype.checkForFade = function() {
-    var thisLine = this.lines[this.currentLine];
-    var thisIsBlackScreen = (typeof(thisLine) != 'string');
-
-    var nextLineIndex = this.currentLine + 1;
-    var lastIndex = this.lines.length - 1;
-    
-    if ( nextLineIndex > lastIndex ) {
-        nextLineIndex = lastIndex;
-    }
-
-    var nextLine = this.lines[nextLineIndex];
-    var nextIsClearScreen = (typeof(nextLine) == 'string');
-
-    if ( thisIsBlackScreen ) {
-        this.opacity = 1.0;
-
-        if ( nextLine && nextIsClearScreen === true ) {
-            this.startFade();
-        }
-    }
-}
-
-Dialog.prototype.startFade = function() {
-    this.fadeWhenChangingLine = true;
-}
