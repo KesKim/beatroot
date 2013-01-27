@@ -1,4 +1,4 @@
-var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, armPosX, armPosY, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint, enemyHeight, moveEnemy, progressAddAmount, progessDecayRate) {
+var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, armPosX, armPosY, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint, enemyHeight, moveEnemy, progressAddAmount, progessDecayRate, maximumPower, powerIncrease) {
     this.mouseDown = false;
     this.mouseUp = true;
     this.powerMeter = 0;
@@ -45,6 +45,8 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, u
     this.moveEnemy = moveEnemy;
     this.enemyHeight = enemyHeight;
     this.progressAddAmount = progressAddAmount;
+    this.maximumPower = maximumPower;
+    this.powerIncrease = powerIncrease;
     this.resetGame();
 };
 
@@ -159,9 +161,9 @@ GameThrow.prototype.update = function(timeDelta) {
         // Charge throw power
         if (this.mouseDown)
         {
-            if (this.powerMeter < 15)
+            if (this.powerMeter < this.maximumPower )
             {
-                this.powerMeter += 0.5; 
+                this.powerMeter += this.powerIncrease; 
             }
         }
 
