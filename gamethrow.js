@@ -1,4 +1,4 @@
-var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, armPosX, armPosY, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint, enemyHeight, moveEnemy, progressAddAmount) {
+var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, armPosX, armPosY, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint, enemyHeight, moveEnemy, progressAddAmount, progessDecayRate) {
     this.mouseDown = false;
     this.mouseUp = true;
     this.powerMeter = 0;
@@ -30,6 +30,7 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, u
     this.projectilePositionX = 0;
     this.projectilePositionY = 0;
     this.progress = null;
+    this.progressDecayRate = progessDecayRate;
     this.progressTitle = progressTitleString;
     this.musicFilename = urlMusic;
     this.music = null;
@@ -51,7 +52,7 @@ GameThrow.prototype.resetGame = function() {
     // Clear the projectile array
     this.throwableArray = [];
     this.enemyArray = [];
-    this.progress = new Progress(this.progressTitle, 0, 0);
+    this.progress = new Progress(this.progressTitle, 0, 0, this.progressDecayRate);
     this.stateMachine = new StateMachine(['started', 'quit', 'dialog', 'finished']);
     this.dialog.reset();
     this.drawPos = new Vec2(this.focus.x, this.focus.y);
