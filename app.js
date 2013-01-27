@@ -87,6 +87,11 @@ var GameSeries = function() {
     gameCanvasContainer.addEventListener('mousemove', mouseMove);
     gameCanvasContainer.addEventListener('mouseup', mouseUp);
     gameCanvasContainer.addEventListener('mouseout', mouseOut);
+    
+    gameCanvasContainer.addEventListener('touchstart', mouseDown);
+    gameCanvasContainer.addEventListener('touchmove', mouseMove);
+    gameCanvasContainer.addEventListener('touchend', mouseUp);
+    gameCanvasContainer.addEventListener('touchcancel', mouseOut);
 };
 
 GameSeries.prototype.toNextGame = function(doFade) {

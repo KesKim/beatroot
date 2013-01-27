@@ -255,7 +255,7 @@ GameThrow.prototype.mouseup = function(event) {
 
     if (this.stateMachine.state === 'started') {
         if (this.mouseDown) {
-            var throwable = this.generateThrowable(event.canvasCoords);
+            var throwable = this.generateThrowable(this.coordinates);
             // Clear the array if max limit reached
             if (this.throwableArray.length > 30) {
                 this.throwableArray = [];

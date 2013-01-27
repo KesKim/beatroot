@@ -20,8 +20,12 @@ Vec2.prototype.length = function() {
 function getRelativeCoords(event, element) {
     var rect = element.getBoundingClientRect();
     // + 0.5 to move to pixel center
-    if (event.touches !== undefined && event.touches.length > 0) {
-        return new Vec2(event.touches[0].clientX - rect.left + 0.5, event.touches[0].clientY - rect.top + 0.5);
+    if (event.touches !== undefined) {
+        if (event.touches.length > 0) {
+            return new Vec2(event.touches[0].clientX - rect.left + 0.5, event.touches[0].clientY - rect.top + 0.5);
+        } else {
+            return undefined;
+        }
     }
     return new Vec2(event.clientX - rect.left + 0.5, event.clientY - rect.top + 0.5);
 }
