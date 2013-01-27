@@ -294,6 +294,7 @@ GameThrow.prototype.cleanUp = function() {
     if (this.music !== null) {
         this.music.stop();
     }
+    this.dialog.reset();
 };
 
 GameThrow.prototype.startGame = function() {
