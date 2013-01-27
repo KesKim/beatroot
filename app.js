@@ -12,10 +12,19 @@ var time = {
 var game = null;
 
 var GameSeries = function() {
-    var rockDialog = new Dialog(["I'm so cool.", "But I'm no King.", 'I lack the... ', new DialogLine('FIRE of passion.')], true);
-    var franceDialog = new Dialog(['Lololol.', new DialogLine('Lol.')], true);
-    var jungleDialog = new Dialog(['...', 'I feel like my life should have a higher purpose.', new DialogLine('I gotta go deeper.')], true);
-    var ancientDialog = new Dialog(['Oh my word!', 'What IS that in the distance?', 'It\'s getting closer!']);
+    var dubstepDialogLines = ['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives...', '... and find the the origin of all beats.', 'The BEATROOT.'];
+    var rockDialogLines = ["I'm so cool.", "But I'm no King.", 'I lack the... ', new DialogLine('FIRE of passion.')];
+    var franceDialogLines = 'Lololol.', new DialogLine('Lol.')];
+    var jungleDialogLines = ['...', 'I feel like my life should have a higher purpose.', new DialogLine('I gotta go deeper.')];
+    var ancientDialogLines = ['Oh my word!', 'What IS that in the distance?', 'It\'s getting closer!'];
+    var endDialogLines = [new DialogLine('YOU HAVE FOUND ME.'), new DialogLine('I AM THE BEATROOT OF INSPIRATION.'), 'Nice to meet you.', 'From now on, things are going to get a lot more funky.', 'Use your powers wisely.'];
+
+    var rockDialog = new Dialog(rockDialogLines, true);
+    var franceDialog = new Dialog([franceDialogLines, true);
+    var jungleDialog = new Dialog(jungleDialogLines, true);
+    var ancientDialog = new Dialog(ancientDialogLines);
+    var endDialog = new Dialog(endDialogLines);
+
     var ancientHitSfx = ['lintuosuma.ogg'];
     var ancientThrowSfx = ['keihas.ogg'];
     var ancientMusic = ['metsastys.ogg'];
