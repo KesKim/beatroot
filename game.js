@@ -11,6 +11,7 @@ var Game = function(dialog) {
     this.music = null;
     this.musicFilename = ['dubstep_good.ogg'];
     this.bgProgression = 0;
+    this.basketSound = null;
 
 
     this.fadeDelta = 0;
@@ -109,6 +110,8 @@ Game.prototype.update = function(timeDelta) {
                     this.objects.splice(i, 1);
                     spliced = true;
                     this.progress.add(0.042);
+                    this.basketSound.stop();
+                    this.basketSound.play();
                     this.basketGlowMult = 1.0;
                 }
             }
@@ -150,6 +153,7 @@ Game.prototype.load = function() {
     this.basketGlow = new Sprite('basket-glow.png');
     this.arrow = new Sprite('arrow.png');
     this.beatRootSmall = new Sprite('beatroot-small.png');
+    this.basketSound = new Audio(['beatroot-bling.ogg'], false)
 
     if (this.musicFilename !== null) {
         this.music = new Audio(this.musicFilename, true);
