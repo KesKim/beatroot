@@ -52,4 +52,16 @@ Progress.prototype.draw = function(ctx) {
     ctx.fillStyle = 'white';
     ctx.fillText(this.title, 10, 20);
     ctx.globalAlpha = 1.0;
+
+    if (this.finished)
+    {
+        var congratulationsText = 'Reached maximum ' + this.title + '!';
+
+        ctx.globalAlpha = 0.7;
+        ctx.fillStyle = 'black';
+        ctx.fillRect(160, 100, ctx.measureText(congratulationsText).width + 20, 30);
+        ctx.fillStyle = 'white';
+        ctx.fillText(congratulationsText, 170, 120);
+        ctx.globalAlpha = 1.0;
+    }
 };
