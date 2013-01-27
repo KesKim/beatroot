@@ -35,7 +35,10 @@ Progress.prototype.add = function(addition) {
     }
     if (this.progress > 1.0) {
         this.progress = 1.0;
-        this.finished = true;
+        if (!this.finished) {
+            this.finished = true;
+            this.finishTime = time.current;
+        }
     }
 };
 
@@ -55,13 +58,13 @@ Progress.prototype.draw = function(ctx) {
 
     if (this.finished)
     {
-        var congratulationsText = 'Reached maximum ' + this.title + '!';
-
-        ctx.globalAlpha = 0.7;
+        ctx.font = '32px sans-serif';
+        var congratulationsText = 'MAXIMUM ' + this.title.toUpperCase() + ' REACHED!';
+        ctx.globalAlpha = Math.max(1.0 - (time.current - this.finishTime) * 0.0005, 0.0);
         ctx.fillStyle = 'black';
-        ctx.fillRect(160, 100, ctx.measureText(congratulationsText).width + 20, 30);
-        ctx.fillStyle = 'white';
-        ctx.fillText(congratulationsText, 170, 120);
-        ctx.globalAlpha = 1.0;
+        ctx.fillText(congratulationsText, 320 - ctx.measureText(congratulationsText).width * 0.5 + 1, 240 - (time.current - this.finishTime) * 0.05 + 1);
+        ctx.fillStyle = 'rgb(255, ' + Math.round(Math.sin(time.current * 0.02) * 50 + 205) +', ' + Math.round(Math.sin(time.current * 0.02) * 50 + 205) + ')';
+        ctx.fillText(congratulationsText, 320 - ctx.measureText(congratulationsText).width * 0.5, 240 - (time.current - this.finishTime) * 0.05);
+        ctx.globalAlpha = 1.0
     }
 };
