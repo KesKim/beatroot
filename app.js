@@ -12,7 +12,7 @@ var time = {
 var game = null;
 
 var GameSeries = function() {
-    var rockDialog = ['...', 'What is a haircut?', 'A miserable pile of style.', 'I gotta go deeper.'];
+    var rockDialog = ["I'm so cool.", "But I'm no King.", 'I lack the... ', 'FIRE of passion.'];
     var jungleDialog = ['...', 'I feel like my life should have a higher purpose.', 'I gotta go deeper.'];
     var ancientDialog = ['Oh my word!', 'What IS that in the distance?', 'It\'s getting closer!'];
     var ancientHitSfx = ['lintuosuma.ogg'];
