@@ -1,6 +1,7 @@
 var Game = function(dialog) {
     this.isAnExample = true;
     this.funk = 0;
+    this.oldBg = null;
     this.bg = null;
     this.beatRoot = null;
     this.beatRootSmall = null;
@@ -14,8 +15,6 @@ var Game = function(dialog) {
     this.musicFilename = ['dubstep_good.ogg'];
     this.bgProgression = 0;
     this.basketSound = null;
-
-    this.fadeDelta = 0;
     this.fadeBackgrounds = 0;
 };
 
@@ -23,6 +22,11 @@ Game.prototype.draw = function(canvas, ctx) {
 
     var basketAlpha = (1.0 - this.beatRootOpacity) * (1.0 - this.creditsAlpha);
 
+    ctx.globalAlpha = 1.0;
+    if (this.oldBg !== null) {
+        this.oldBg.draw(ctx, 0, 0);
+        ctx.globalAlpha = this.fadeBackgrounds;
+    }
     this.bg.draw(ctx, 0, 0);
     ctx.globalAlpha = this.beatRootOpacity;
     ctx.fillStyle = 'rgb(' + Math.round(this.funk * 20) + ', 0, 0)';
@@ -78,29 +82,32 @@ Game.prototype.update = function(timeDelta) {
             this.beatRootOpacity = 0;
         }
 
-        this.fadeDelta = -2.0;
-
         if (this.rootDensity > 0.25 && this.bgProgression === 0)
         {
-            this.fadeBackgrounds = -2.0;
+            this.fadeBackgrounds = 0.0;
+            this.oldBg = this.bg;
             this.bg = new Sprite('bg-bohemian-rhapsody.png');
             this.bgProgression++;
         }
         else if (this.rootDensity > 0.5 && this.bgProgression === 1)
         {
-            this.fadeBackgrounds = -2.0;
+            this.fadeBackgrounds = 0.0;
+            this.oldBg = this.bg;
             this.bg = new Sprite('bg-rock-on.png');
             this.bgProgression++;
         }
         else if (this.rootDensity > 0.75 && this.bgProgression === 2)
         {
-            this.fadeBackgrounds = -2.0;
+            this.fadeBackgrounds = 0.0;
+            this.oldBg = this.bg;
             this.bg = new Sprite('bg-dubstep-can-be-good.png');
             this.bgProgression++;
         }
 
-        // TODO: Fade doesn't work
-        this.fadeBackgrounds += this.fadeDelta * timeDelta * 0.001;
+        this.fadeBackgrounds += timeDelta * 0.001;
+        if (this.fadeBackgrounds > 1.0) {
+            this.fadeBackgrounds = 1.0;
+        }
 
         var i = 0; 
         var spliced = false;
@@ -173,7 +180,7 @@ Game.prototype.load = function() {
 };
 
 Game.prototype.isFinished = function() {
-    return this.stateMachine.state === 'finished';
+    return false;
 };
 
 Game.prototype.cleanUp = function() {
