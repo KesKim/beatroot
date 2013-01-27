@@ -1,4 +1,4 @@
-var Game = function() {
+var Game = function(dialogLines) {
     this.isAnExample = true;
     this.funk = 0;
     this.bg = null;
@@ -11,6 +11,16 @@ var Game = function() {
     this.music = null;
     this.musicFilename = ['dubstep_good.ogg'];
     this.bgProgression = 0;
+
+    this.dialogLines = [
+		new DialogLine('YOU HAVE FOUND ME.'),
+        new DialogLine('I AM THE BEATROOT OF INSPIRATION.'),
+        'Nice to meet you.',
+        'From now on, things are going to get a lot more funky.',
+        'Use your powers wisely.'];
+
+    if ( dialogLines )
+    	this.dialogLines = dialogLines;
 };
 
 Game.prototype.draw = function(canvas, ctx) {
@@ -158,13 +168,7 @@ Game.prototype.startGame = function() {
         this.music.play();
     }
 
-	this.dialog = new Dialog([
-		new DialogLine('YOU HAVE FOUND ME.'),
-        new DialogLine('I AM THE BEATROOT OF INSPIRATION.'),
-        'Nice to meet you.',
-        'From now on, things are going to get a lot more funky.',
-        'Use your powers wisely.']
-    );
+	this.dialog = new Dialog(this.dialogLines);
 
     this.dialog.start();
     this.stateMachine = new StateMachine(['dialog', 'dropping-jungle', 'dropping-modern', 'finished']);
