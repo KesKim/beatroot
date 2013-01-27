@@ -11,9 +11,12 @@ var Game = function() {
     this.music = null;
     this.musicFilename = ['dubstep_good.ogg'];
     this.bgProgression = 0;
+    this.fadeDelta = 0;
+    this.fadeBackgrounds = 0;
 };
 
 Game.prototype.draw = function(canvas, ctx) {
+
     this.bg.draw(ctx, 0, 0);
     ctx.globalAlpha = this.beatRootOpacity;
     ctx.fillStyle = 'rgb(' + Math.round(this.funk * 20) + ', 0, 0)';
@@ -65,21 +68,29 @@ Game.prototype.update = function(timeDelta) {
             this.beatRootOpacity = 0;
         }
 
+        this.fadeDelta = -2.0;
+
         if (this.rootDensity > 0.25 && this.bgProgression === 0)
         {
+            this.fadeBackgrounds = -2.0;
             this.bg = new Sprite('bg-bohemian-rhapsody.png');
             this.bgProgression++;
         }
         else if (this.rootDensity > 0.5 && this.bgProgression === 1)
         {
+            this.fadeBackgrounds = -2.0;
             this.bg = new Sprite('bg-rock-on.png');
             this.bgProgression++;
         }
         else if (this.rootDensity > 0.75 && this.bgProgression === 2)
         {
-            this.bg = new Sprite('bg-dubstep.png');
+            this.fadeBackgrounds = -2.0;
+            this.bg = new Sprite('bg-dubstep-can-be-good.png');
             this.bgProgression++;
         }
+
+        // TODO: Fade doesn't work
+        this.fadeBackgrounds += this.fadeDelta * timeDelta * 0.001;
 
         var i = 0; 
         var spliced = false;
