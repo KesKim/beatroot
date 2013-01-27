@@ -1,5 +1,3 @@
-var developerMode = true;
-
 var gameCanvas;
 var gameCtx;
 
