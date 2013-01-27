@@ -1,4 +1,4 @@
-var Progress = function(title, minProgress, progress) {
+var Progress = function(title, minProgress, progress, decayRate) {
     if (minProgress === undefined) {
         minProgress = 0;
     }
@@ -10,11 +10,16 @@ var Progress = function(title, minProgress, progress) {
     this.progress = progress;
     this.finished = false;
     this.addFade = 0.0;
+
+    this.decayRate = 0.001;
+
+    if ( decayRate )
+        this.decayRate = decayRate;
 };
 
 Progress.prototype.update = function(timeDelta) {
     if (this.progress < 1.0) {
-        this.progress = this.minProgress + (this.progress - this.minProgress) * Math.pow(0.9, timeDelta * 0.001);
+        this.progress = this.minProgress + (this.progress - this.minProgress) * Math.pow(0.9, timeDelta * this.decayRate);
     }
     this.addFade -= Math.min(timeDelta, 50) * 0.0017;
     if (this.addFade < 0) {
