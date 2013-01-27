@@ -9,7 +9,6 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, u
     this.coordinates = null;
     this.currentVelX = 0;
     this.currentVelY = 0;
-    this.angleRadians = 0;
     this.armRotation = -0.5;
     this.startPoint = new Vec2(80, 300);
     this.armPoint = new Vec2(armPosX, armPosY);
@@ -91,7 +90,6 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     //         ctx.fillText('Mouse X: ' + this.coordinates.x, 20, 40);
     //         ctx.fillText('Mouse Y: ' + this.coordinates.y, 20, 60);
     //         ctx.fillText('Velocity: ' + this.currentVelX + ', ' + this.currentVelY, 20, 80);
-    //         ctx.fillText('Angle: ' + this.angleRadians, 20, 100);
     //         ctx.fillText('MouseDown: ' + this.mouseDown, 20, 120);
     //         ctx.fillText('MouseUp: ' + this.mouseUp, 20, 140);
     //         ctx.fillText('Delay: ' + this.throwDelayElapsed, 20, 160);
@@ -99,7 +97,25 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     //         ctx.fillRect(this.projectilePositionX,this.projectilePositionY,5,5);
     //     }
     // }
-
+    
+    console.log(this.powerMeter);
+    
+    if (this.coordinates !== null) {
+        var throwSimulation = this.generateThrowable(this.coordinates);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 3.0;
+        for (var i = 0; i < 32; ++i) {
+            ctx.globalAlpha = 0.5 * Math.min(this.powerMeter / this.maximumPower * 1.5, 1.0) * Math.sin(i / 32 * Math.PI);
+            throwSimulation.update(16);
+            if (i > 0) {
+                ctx.lineTo(throwSimulation.posX, throwSimulation.posY);
+                ctx.stroke();
+            }
+            ctx.beginPath();
+            ctx.moveTo(throwSimulation.posX, throwSimulation.posY);
+        }
+        ctx.globalAlpha = 1.0;
+    }
     ctx.fillStyle = 'black';
     
     if (this.coordinates !== null) {
@@ -107,13 +123,9 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     }
 
     // "Animation"
-    if (this.mouseUp)
-    {
+    if (this.mouseUp && this.throwDelayElapsed <= this.throwDelay) {
         this.characterArmThrown.drawRotated(ctx, this.armPoint.x, this.armPoint.y, this.armRotation);
-    }
-
-    if (this.mouseDown)
-    {
+    } else {
         this.characterArmCharge.drawRotated(ctx, this.armPoint.x, this.armPoint.y, this.armRotation);
     }
 
@@ -222,43 +234,38 @@ GameThrow.prototype.mousemove = function(event) {
     }
 };
 
+GameThrow.prototype.generateThrowable = function(mouseCoords) {
+    // Calculate the angle of attack
+    var angle = Math.atan((this.armPoint.y - mouseCoords.y) / (this.armPoint.x - mouseCoords.x));
+    if (angle > 0) {
+        angle = 0;
+    }
+    if (angle < -1.3) {
+        angle = -1.3;
+    }
+    // Create new projectile
+    var throwableItem = new GameObject(this.projectile, this.startPoint.x, this.startPoint.y);
+    throwableItem.velX = this.powerMeter * Math.cos(angle);
+    throwableItem.velY = this.powerMeter * Math.sin(angle);
+    // Debug velocities
+    this.currentVelX = throwableItem.velX;
+    this.currentVelY = throwableItem.velY;
+    return throwableItem;
+}
+
 GameThrow.prototype.mouseup = function(event) {
 
     if (this.stateMachine.state === 'started') {
-        if (this.mouseDown)
-        {
-            // Calculate the angle of attack
-            var mouseCoords = event.canvasCoords;
-            var angle = Math.atan((this.armPoint.y - mouseCoords.y) / (this.armPoint.x - mouseCoords.x));
-
-            if (angle > 0)
-                angle = 0;
-
-            if (angle < -1.3)
-                angle = -1.3;
-
-            this.angleRadians = angle;
-            this.mouseDown = false;
-
-            // Create new projectile
-            var throwableItem = new GameObject(this.projectile, this.startPoint.x, this.startPoint.y);
-            this.throwSfx.play();
-
-            throwableItem.velX = this.powerMeter * Math.cos(angle);
-            throwableItem.velY = this.powerMeter * Math.sin(angle);
-
-            // Debug velocities
-            this.currentVelX = throwableItem.velX;
-            this.currentVelY = throwableItem.velY;
-
+        if (this.mouseDown) {
+            var throwable = this.generateThrowable(event.canvasCoords);
             // Clear the array if max limit reached
-            if (this.throwableArray.length > 30)
-            {
+            if (this.throwableArray.length > 30) {
                 this.throwableArray = [];
             }
-
-            this.throwableArray.push(throwableItem);
+            this.throwableArray.push(throwable);
             this.throwDelayElapsed = 0;
+            this.throwSfx.play();
+            this.mouseDown = false;
         }
 
         // Reset power
