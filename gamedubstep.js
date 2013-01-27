@@ -1,12 +1,8 @@
-var GameDubstep = function(dialogLines) {
+var GameDubstep = function(dialog) {
     this.stateMachine = new StateMachine(['notinitialized', 'initialized', 'frustrated', 'finished']);
     this.music = null;
-    this.dialog = null;
+    this.dialog = dialog;
     this.cleanUp();
-    this.dialogLines = ['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives...', '... and find the the origin of all beats.', 'The BEATROOT.'];
-
-    if ( dialogLines )
-        this.dialogLines = dialogLines;
 };
 
 GameDubstep.prototype.draw = function(canvas, ctx) {
@@ -147,7 +143,6 @@ GameDubstep.prototype.cleanUp = function() {
         this.dialog.reset();
     }
     this.progress = new Progress('Frustration', 0.5);
-    this.dialog = new Dialog(this.dialogLines);
 };
 
 GameDubstep.prototype.startGame = function() {
