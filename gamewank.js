@@ -1,4 +1,4 @@
-var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename, bgFilename, objectFilename, focusPoint, xLimit, yLimit) {
+var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename, bgFilename, objectFilename, focusPoint, xLimit, yLimit, rubSounds) {
     if (xLimit === undefined) {
         xLimit = 320;
     }
@@ -17,6 +17,7 @@ var GameWank = function(progressTitle, wankRequired, dialogLines, musicFilename,
     this.xLimit = xLimit;
     this.yLimit = yLimit;
     this.music = null;
+    this.effectNames = rubSounds;
     this.soundRub = null;
     this.resetGame();
 };
@@ -149,7 +150,7 @@ GameWank.prototype.load = function() {
         this.music = new Audio(this.musicFilename, true);
     }
 
-    this.soundRub = new Audio(['woodrub.ogg'], false);
+    this.soundRub = new Audio(this.effectNames, false);
 };
 
 GameWank.prototype.isFinished = function() {
