@@ -12,15 +12,16 @@ var time = {
 var game = null;
 
 var GameSeries = function() {
-    var dubstepDialogLines = ['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives...', '... and find the the origin of all beats.', 'The BEATROOT.'];
+    var dubstepDialogLines = ['This is going nowhere...', 'I need a way to regain my inspiration.', 'I need to find the mother of all jams.', 'I must look into my past lives...', '... and find the the origin of all beats.', 'The BEATROOT.', new DialogLine('STORY TRANSITION BIT')];
     var rockDialogLines = ["I'm so cool.", "But I'm no King.", 'I lack the... ', new DialogLine('FIRE of passion.')];
-    var franceDialogLines = 'Lololol.', new DialogLine('Lol.')];
+    var franceDialogLines = ['Lololol.', new DialogLine('Lol.')];
     var jungleDialogLines = ['...', 'I feel like my life should have a higher purpose.', new DialogLine('I gotta go deeper.')];
     var ancientDialogLines = ['Oh my word!', 'What IS that in the distance?', 'It\'s getting closer!'];
     var endDialogLines = [new DialogLine('YOU HAVE FOUND ME.'), new DialogLine('I AM THE BEATROOT OF INSPIRATION.'), 'Nice to meet you.', 'From now on, things are going to get a lot more funky.', 'Use your powers wisely.'];
 
+    var dubstepDialog = new Dialog(dubstepDialogLines, true);
     var rockDialog = new Dialog(rockDialogLines, true);
-    var franceDialog = new Dialog([franceDialogLines, true);
+    var franceDialog = new Dialog(franceDialogLines, true);
     var jungleDialog = new Dialog(jungleDialogLines, true);
     var ancientDialog = new Dialog(ancientDialogLines);
     var endDialog = new Dialog(endDialogLines);
@@ -33,12 +34,12 @@ var GameSeries = function() {
     var franceMusic = ['absinthe.ogg'];
 
     this.games = [
-        new GameDubstep(),
+        new GameDubstep(dubstepDialog),
         new GameWank('Street cred', 1000, rockDialog, ['rockabilly.ogg'], 'bg-rock.png', 'comb.png', new Vec2(400, 180), 0, 100, ['comb.ogg'], 0.00025),
         new GameThrow(franceThrowSfx, franceHitSfx, new Vec2(320, 160), franceDialog, franceMusic, 'Decadence', 'bottle.png', 'bg-bohemian.png', 'thrown.png', 82, 366, 'bottlethrow.png', 'bird.png', 500, 300, 300, false, 0.20),
         new GameWank('Ignition', 5000, jungleDialog, ['jungle.ogg'], 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0, ['woodrub.ogg']),
         new GameThrow(ancientThrowSfx, ancientHitSfx, new Vec2(320, 160), ancientDialog, ancientMusic, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png', 47, 366, 'spearthrow.png','bird.png', -100, 600, 70, true, 0.45),
-        new Game()
+        new Game(endDialog)
     ];
 
     this.fade = 0.0;
