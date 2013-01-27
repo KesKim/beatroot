@@ -10,6 +10,7 @@ var Game = function() {
     this.progress = null;
     this.music = null;
     this.musicFilename = ['dubstep_good.ogg'];
+    this.bgProgression = 0;
 };
 
 Game.prototype.draw = function(canvas, ctx) {
@@ -18,6 +19,8 @@ Game.prototype.draw = function(canvas, ctx) {
     ctx.fillStyle = 'rgb(' + Math.round(this.funk * 20) + ', 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     this.beatRoot.drawRotated(ctx, canvas.width * 0.5, canvas.height * 0.5, this.funk * 0.5 - 0.25, this.funk * 0.5 + 1.0);
+    ctx.globalAlpha = 1.0 - this.beatRootOpacity;
+    this.basketBack.drawRotated(ctx, this.basketX, gameCanvas.height - 35, 0.0, 0.8);
     ctx.globalAlpha = 1.0;
     if (this.stateMachine.state !== 'dialog') {
         this.progress.draw(ctx);
@@ -25,6 +28,8 @@ Game.prototype.draw = function(canvas, ctx) {
             this.objects[i].draw(canvas, ctx);
         }
     }
+    ctx.globalAlpha = (1.0 - this.beatRootOpacity) * this.basketGlowMult;
+    this.basketGlow.drawRotated(ctx, this.basketX, gameCanvas.height - 35, 0.0, 0.8);
     ctx.globalAlpha = 1.0 - this.beatRootOpacity;
     this.basket.drawRotated(ctx, this.basketX, gameCanvas.height - 35, 0.0, 0.8);
     ctx.globalAlpha = (0.5 - Math.abs(0.5 - this.arrowFade)) * 2.0;
@@ -36,6 +41,10 @@ Game.prototype.draw = function(canvas, ctx) {
 Game.prototype.update = function(timeDelta) {
     this.funk = Math.sin(time.current * 0.002) * 0.5 + 0.5;
     this.stateMachine.update(timeDelta);
+    this.basketGlowMult -= timeDelta * 0.002;
+    if (this.basketGlowMult < 0.0) {
+        this.basketGlowMult = 0.0;
+    }
     if (this.stateMachine.state === 'dialog') {
         this.dialog.update(timeDelta);
         if (this.dialog.finished) {
@@ -55,6 +64,23 @@ Game.prototype.update = function(timeDelta) {
         if (this.beatRootOpacity < 0) {
             this.beatRootOpacity = 0;
         }
+
+        if (this.rootDensity > 0.25 && this.bgProgression === 0)
+        {
+            this.bg = new Sprite('bg-bohemian-rhapsody.png');
+            this.bgProgression++;
+        }
+        else if (this.rootDensity > 0.5 && this.bgProgression === 1)
+        {
+            this.bg = new Sprite('bg-rock-on.png');
+            this.bgProgression++;
+        }
+        else if (this.rootDensity > 0.75 && this.bgProgression === 2)
+        {
+            this.bg = new Sprite('bg-dubstep.png');
+            this.bgProgression++;
+        }
+
         var i = 0; 
         var spliced = false;
         while (i < this.objects.length) {
@@ -70,6 +96,7 @@ Game.prototype.update = function(timeDelta) {
                     this.objects.splice(i, 1);
                     spliced = true;
                     this.progress.add(0.042);
+                    this.basketGlowMult = 1.0;
                 }
             }
             if (!spliced) {
@@ -106,6 +133,8 @@ Game.prototype.load = function() {
     this.bg = new Sprite('bg-jungle-boogie.png');
     this.beatRoot = new Sprite('beatroot-big.png');
     this.basket = new Sprite('basket.png');
+    this.basketBack = new Sprite('basket-back.png');
+    this.basketGlow = new Sprite('basket-glow.png');
     this.arrow = new Sprite('arrow.png');
     this.beatRootSmall = new Sprite('beatroot-small.png');
 
@@ -145,4 +174,5 @@ Game.prototype.startGame = function() {
     this.basketX = 320;
     this.rootDensity = 0.0;
     this.objects = [];
+    this.basketGlowMult = 0.0;
 };
