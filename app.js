@@ -29,7 +29,7 @@ var GameSeries = function() {
     var ancientHitSfx = ['lintuosuma.ogg'];
     var ancientThrowSfx = ['keihas.ogg'];
     var ancientMusic = ['metsastys.ogg'];
-    var franceHitSfx = ['absinthe-glass.wav'];
+    var franceHitSfx = ['absinthe-glass.ogg', 'absinthe-glass.wav'];
     var franceThrowSfx = ['keihas.ogg'];
     var franceMusic = ['absinthe.ogg'];
 
