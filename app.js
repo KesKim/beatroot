@@ -36,7 +36,7 @@ var GameSeries = function() {
     this.games = [
         new GameDubstep(dubstepDialog),
         new GameWank('Street cred', 1000, rockDialog, ['rockabilly.ogg'], 'bg-rock.png', 'comb.png', new Vec2(400, 180), 0, 100, ['comb.ogg'], 0.00025),
-        new GameThrow(franceThrowSfx, franceHitSfx, new Vec2(320, 160), franceDialog, franceMusic, 'Decadence', 'bottle.png', 'bg-bohemian.png', 'thrown.png', 82, 366, 'bottlethrow.png', 'bird.png', 500, 300, 300, false, 0.20),
+        new GameThrow(franceThrowSfx, franceHitSfx, new Vec2(320, 160), franceDialog, franceMusic, 'Decadence', 'bottle.png', 'bg-bohemian.png', 'thrown.png', 82, 366, 'bottlethrow.png', 'bird.png', 500, 300, 300, false, 0.20, 0.00015),
         new GameWank('Ignition', 5000, jungleDialog, ['jungle.ogg'], 'bg-jungle.png', 'firethingy.png', new Vec2(320, 160), 140, 0, ['woodrub.ogg']),
         new GameThrow(ancientThrowSfx, ancientHitSfx, new Vec2(320, 160), ancientDialog, ancientMusic, 'Self Confidence', 'spear.png','bg-ancient.png','thrown.png', 47, 366, 'spearthrow.png','bird.png', -100, 600, 70, true, 0.45, 0.0004),
         new Game(endDialog)
