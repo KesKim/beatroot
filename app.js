@@ -19,7 +19,7 @@ var GameSeries = function() {
     var ancientThrowSfx = ['keihas.ogg'];
     var ancientMusic = ['metsastys.ogg'];
     var franceDialog = ['Lololol.','Lol.'];
-    var franceHitSfx = ['lintuosuma.ogg'];
+    var franceHitSfx = ['absinthe-glass.wav'];
     var franceThrowSfx = ['keihas.ogg'];
     var franceMusic = ['absinthe.ogg'];
 

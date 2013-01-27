@@ -10,6 +10,7 @@ var Game = function() {
     this.progress = null;
     this.music = null;
     this.musicFilename = ['dubstep_good.ogg'];
+    this.bgProgression = 0;
 };
 
 Game.prototype.draw = function(canvas, ctx) {
@@ -63,6 +64,23 @@ Game.prototype.update = function(timeDelta) {
         if (this.beatRootOpacity < 0) {
             this.beatRootOpacity = 0;
         }
+
+        if (this.rootDensity > 0.25 && this.bgProgression === 0)
+        {
+            this.bg = new Sprite('bg-bohemian-rhapsody.png');
+            this.bgProgression++;
+        }
+        else if (this.rootDensity > 0.5 && this.bgProgression === 1)
+        {
+            this.bg = new Sprite('bg-rock-on.png');
+            this.bgProgression++;
+        }
+        else if (this.rootDensity > 0.75 && this.bgProgression === 2)
+        {
+            this.bg = new Sprite('bg-dubstep.png');
+            this.bgProgression++;
+        }
+
         var i = 0; 
         var spliced = false;
         while (i < this.objects.length) {
