@@ -98,8 +98,6 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     //     }
     // }
     
-    console.log(this.powerMeter);
-    
     if (this.coordinates !== null) {
         var throwSimulation = this.generateThrowable(this.coordinates);
         ctx.strokeStyle = 'white';
