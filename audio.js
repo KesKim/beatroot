@@ -22,6 +22,5 @@ Audio.prototype.play = function () {
 
 Audio.prototype.stop = function () {
     this.audio.pause();
-    this.audio.ended = true;
     this.audio.currentTime = 0;
 }
