@@ -10,12 +10,9 @@ var Game = function(dialog) {
     this.dialog = dialog;
     this.progress = null;
     this.credits = null;
-    this.creditsAlpha = 0.0;
     this.music = null;
     this.musicFilename = ['dubstep_good.ogg'];
-    this.bgProgression = 0;
     this.basketSound = null;
-    this.fadeBackgrounds = 0;
 };
 
 Game.prototype.draw = function(canvas, ctx) {
@@ -204,4 +201,7 @@ Game.prototype.startGame = function() {
     this.rootDensity = 0.0;
     this.objects = [];
     this.basketGlowMult = 0.0;
+    this.creditsAlpha = 0.0;
+    this.bgProgression = 0;
+    this.fadeBackgrounds = 0;
 };
