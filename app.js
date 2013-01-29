@@ -1,4 +1,4 @@
-var developerMode = true;
+var developerMode = false;
 
 var gameCanvas;
 var gameCtx;
