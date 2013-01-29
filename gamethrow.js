@@ -1,4 +1,4 @@
-var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, armPosX, armPosY, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint, enemyHeight, moveEnemy, progressAddAmount, progessDecayRate, maximumPower, powerIncrease) {
+var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, urlMusic, progressTitleString, urlProjectile, urlBg, urlCharacterArmThrown, armPosX, armPosY, urlCharacterArmCharge, urlEnemy, enemyStartpoint, enemyEndpoint, enemyHeight, moveEnemy, progressAddAmount, progessDecayRate, maximumPower, powerIncrease, fragileProjectile) {
     this.mouseDown = false;
     this.mouseUp = true;
     this.powerMeter = 0;
@@ -21,11 +21,9 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, u
     this.throwDelayElapsed = 0;
     this.throwDelay = 500;
     this.projectile = new Sprite(urlProjectile);
-    this.deltaTimeDebug = 0;
     this.enemyTurnpoint1 = enemyStartpoint;
     this.enemyTurnpoint2 = enemyEndpoint;
     this.enemySprite = new Sprite(urlEnemy);
-    this.enemyOnScreen = false;
     this.progress = null;
     this.progressDecayRate = progessDecayRate;
     this.progressTitle = progressTitleString;
@@ -44,6 +42,7 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, u
     this.progressAddAmount = progressAddAmount;
     this.maximumPower = maximumPower;
     this.powerIncrease = powerIncrease;
+    this.fragileProjectile = fragileProjectile;
     this.resetGame();
 };
 
@@ -54,8 +53,7 @@ GameThrow.prototype.resetGame = function() {
     this.progress = new Progress(this.progressTitle, 0, 0, this.progressDecayRate);
     this.stateMachine = new StateMachine(['started', 'quit', 'dialog', 'finished']);
     this.dialog.reset();
-    this.drawPos = new Vec2(this.focus.x, this.focus.y);
-    this.drawPosFall = 0.0;
+    this.timeQuit = 0;
 }
 
 GameThrow.prototype.draw = function(canvas, ctx) {
@@ -91,11 +89,10 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     //         ctx.fillText('MouseDown: ' + this.mouseDown, 20, 120);
     //         ctx.fillText('MouseUp: ' + this.mouseUp, 20, 140);
     //         ctx.fillText('Delay: ' + this.throwDelayElapsed, 20, 160);
-    //         ctx.fillText('Delta: ' + this.deltaTimeDebug, 20, 180);
     //     }
     // }
     
-    if (this.coordinates !== null) {
+    if (this.coordinates !== null && this.stateMachine.state === 'started') {
         var throwSimulation = this.generateThrowable(this.coordinates);
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 3.0;
@@ -128,21 +125,16 @@ GameThrow.prototype.draw = function(canvas, ctx) {
 };
 
 GameThrow.prototype.update = function(timeDelta) {
-
     this.progress.update(timeDelta);
-    if (this.stateMachine.state === 'started') {
-        // Add the elapsed time to the timer
-        this.throwDelayElapsed += timeDelta;
 
-        this.deltaTimeDebug = timeDelta;
+    // Update projectiles
+    for (var i = this.throwableArray.length - 1; i >= 0; i--) {
+        this.throwableArray[i].update(timeDelta);
+    };
 
-        // Update projectiles
-        for (var i = this.throwableArray.length - 1; i >= 0; i--) {
-            this.throwableArray[i].update(timeDelta);
-        };
-
-        // Update enemies
-        var j = 0; 
+    // Update enemies
+    var j = 0;
+    if (this.stateMachine.state === 'started' || !this.fragileProjectile) {
         while (j < this.enemyArray.length) {
             this.enemyArray[j].update(timeDelta, this.enemyTurnpoint1, this.enemyTurnpoint2);
             if (this.enemyArray[j].destroyed) {
@@ -151,42 +143,37 @@ GameThrow.prototype.update = function(timeDelta) {
                 j++;
             }
         };
+    }
 
-        for (var k = this.throwableArray.length - 1; k >= 0; k--) {
-            var proj = this.throwableArray[k];
-            if (!proj.disabled) {
-                for (var l = this.enemyArray.length - 1; l >= 0; l--) {
-                    if (this.enemyArray[l].isColliding(proj.posX, proj.posY)) {
-                        proj.disabled = true;
-                        this.progress.add(this.progressAddAmount);
-                        this.hitSfx.playClone();
-                    }
+    j = 0;
+    while (j < this.throwableArray.length) {
+        var proj = this.throwableArray[j];
+        if (!proj.disabled) {
+            for (var l = this.enemyArray.length - 1; l >= 0; l--) {
+                if (this.enemyArray[l].isColliding(proj.posX, proj.posY)) {
+                    proj.disabled = true;
+                    this.progress.add(this.progressAddAmount);
+                    this.hitSfx.playClone();
                 }
             }
-        };
+        }
+        if (proj.disabled && this.fragileProjectile) {
+            this.throwableArray.splice(j, 1);
+        } else {
+            j++;
+        }
+    };
 
-        this.progress.update(timeDelta);
-
+    if (this.stateMachine.state === 'started') {
+        // Add the elapsed time to the timer
+        this.throwDelayElapsed += timeDelta;
+        
         // Charge throw power
-        if (this.mouseDown)
-        {
-            if (this.powerMeter < this.maximumPower )
-            {
-                this.powerMeter += this.powerIncrease; 
-            }
+        if (this.mouseDown && this.powerMeter < this.maximumPower) {
+            this.powerMeter += this.powerIncrease;
         }
-
-        if (this.enemyArray.length > 0)
-        {
-            this.enemyOnScreen = true;
-        }
-        else
-        {
-            this.enemyOnScreen = false;
-        }
-
-        if (!this.enemyOnScreen)
-        {
+        
+        if (this.enemyArray.length === 0) {
             var newEnemy = new Enemy(this.enemySprite, this.enemyTurnpoint1, this.enemyHeight, this.moveEnemy);
             this.enemyArray.push(newEnemy);
         }
@@ -195,9 +182,8 @@ GameThrow.prototype.update = function(timeDelta) {
             this.stateMachine.advance();
         }
     } else if (this.stateMachine.state === 'quit') {
-        this.drawPosFall += 0.001 * timeDelta;
-        this.drawPos.y += this.drawPosFall * timeDelta;
-        if (this.drawPos.y > 1000) {
+        this.timeQuit += timeDelta;
+        if (this.timeQuit > 1000) {
             this.stateMachine.advance();
             this.dialog.start();
         }

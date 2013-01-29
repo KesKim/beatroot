@@ -7,7 +7,6 @@ var Enemy = function(sprite, x, y, moveEnemy) {
     this.accY = null;
     this.sprite = sprite;
     this.rotation = 0;
-    this.canvasWidth = 0;
     this.moveForward = true;
     this.circleRadius = 30;
     this.collides = false;
@@ -16,21 +15,16 @@ var Enemy = function(sprite, x, y, moveEnemy) {
 };
 
 Enemy.prototype.draw = function(canvas, ctx) {
-    if (!this.destroyed)
-    {
-        this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation);
+    this.sprite.drawRotated(ctx, this.posX, this.posY, this.rotation);
 
-        // if (developerMode)
-        // {
-        //     ctx.beginPath();
-        //     ctx.arc(this.posX, this.posY, this.circleRadius, 0, 2 * Math.PI, false);
-        //     ctx.lineWidth = 2;
-        //     ctx.strokeStyle = '#003300';
-        //     ctx.stroke();
-        // }
-    }
-
-    this.canvasWidth = canvas.width;
+    // if (developerMode)
+    // {
+    //     ctx.beginPath();
+    //     ctx.arc(this.posX, this.posY, this.circleRadius, 0, 2 * Math.PI, false);
+    //     ctx.lineWidth = 2;
+    //     ctx.strokeStyle = '#003300';
+    //     ctx.stroke();
+    // }
 };
 
 Enemy.prototype.isColliding = function(x, y) {
