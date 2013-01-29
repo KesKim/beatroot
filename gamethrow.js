@@ -26,8 +26,6 @@ var GameThrow = function(throwSfxFilename, hitSfxFilename, focusPoint, dialog, u
     this.enemyTurnpoint2 = enemyEndpoint;
     this.enemySprite = new Sprite(urlEnemy);
     this.enemyOnScreen = false;
-    this.projectilePositionX = 0;
-    this.projectilePositionY = 0;
     this.progress = null;
     this.progressDecayRate = progessDecayRate;
     this.progressTitle = progressTitleString;
@@ -94,7 +92,6 @@ GameThrow.prototype.draw = function(canvas, ctx) {
     //         ctx.fillText('MouseUp: ' + this.mouseUp, 20, 140);
     //         ctx.fillText('Delay: ' + this.throwDelayElapsed, 20, 160);
     //         ctx.fillText('Delta: ' + this.deltaTimeDebug, 20, 180);
-    //         ctx.fillRect(this.projectilePositionX,this.projectilePositionY,5,5);
     //     }
     // }
     
@@ -145,25 +142,27 @@ GameThrow.prototype.update = function(timeDelta) {
         };
 
         // Update enemies
-        for (var j = this.enemyArray.length - 1; j >= 0; j--) {
+        var j = 0; 
+        while (j < this.enemyArray.length) {
             this.enemyArray[j].update(timeDelta, this.enemyTurnpoint1, this.enemyTurnpoint2);
-            if (this.enemyArray[j].destroyed)
-            {
-                this.enemyArray.pop();
-                this.progress.add(this.progressAddAmount);
-                this.hitSfx.play();
+            if (this.enemyArray[j].destroyed) {
+                this.enemyArray.splice(j, 1);
+            } else {
+                j++;
             }
         };
 
         for (var k = this.throwableArray.length - 1; k >= 0; k--) {
-            for (var l = this.enemyArray.length - 1; l >= 0; l--) {
-                var proj = this.throwableArray[k];
-
-                this.projectilePositionX = proj.posX;
-                this.projectilePositionY = proj.posY;
-
-                this.enemyArray[l].isColliding(proj.posX, proj.posY);
-            };
+            var proj = this.throwableArray[k];
+            if (!proj.disabled) {
+                for (var l = this.enemyArray.length - 1; l >= 0; l--) {
+                    if (this.enemyArray[l].isColliding(proj.posX, proj.posY)) {
+                        proj.disabled = true;
+                        this.progress.add(this.progressAddAmount);
+                        this.hitSfx.playClone();
+                    }
+                }
+            }
         };
 
         this.progress.update(timeDelta);
@@ -262,7 +261,7 @@ GameThrow.prototype.mouseup = function(event) {
             }
             this.throwableArray.push(throwable);
             this.throwDelayElapsed = 0;
-            this.throwSfx.play();
+            this.throwSfx.playClone();
             this.mouseDown = false;
         }
 

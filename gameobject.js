@@ -16,6 +16,7 @@ var GameObject = function(sprite, x, y, rotateAccordingToVelocity, scale) {
     this.gravity = 0.1;
     this.sprite = sprite;
     this.rotation = 0;
+    this.disabled = false;
 };
 
 GameObject.prototype.calculateRotationAccordingToVelocity = function() {

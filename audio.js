@@ -1,19 +1,40 @@
 var Audio = function(filenames, isLooping) {
+    if (isLooping === undefined) {
+        isLooping = false;
+    }
     this.loaded = false;
     this.playWhenLoaded = false;
-    this.filenames = filenames;
     this.audio = document.createElement('audio');
-    this.audio.loop = false;
+    this.audio.loop = isLooping;
+    this.filenames = filenames;
+    this.addSourcesTo(this.audio);
+    this.clones = [];
+}
 
-    if ( isLooping ) {
-        this.audio.loop = isLooping;
-    }
-
+Audio.prototype.addSourcesTo = function(audioElement) {
     for (var i = 0; i < this.filenames.length; ++i) {
         var source = document.createElement('source');
         source.src = 'Assets/' + this.filenames[i];
-        this.audio.appendChild(source);
+        audioElement.appendChild(source);
     }
+}
+
+Audio.prototype.playClone = function () {
+    if (this.audio.ended) {
+        this.audio.play();
+        return;
+    }
+    for (var i = 0; i < this.clones.length; ++i) {
+        if (this.clones[i].ended) {
+            this.clones[i].currentTime = 0;
+            this.clones[i].play();
+            return;
+        }
+    }
+    var clone = document.createElement('audio');
+    this.addSourcesTo(clone);
+    this.clones.push(clone);
+    clone.play();
 }
 
 Audio.prototype.play = function () {

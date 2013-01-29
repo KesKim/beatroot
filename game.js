@@ -124,8 +124,7 @@ Game.prototype.update = function(timeDelta) {
                     this.objects.splice(i, 1);
                     spliced = true;
                     this.progress.add(0.042);
-                    this.basketSound.stop();
-                    this.basketSound.play();
+                    this.basketSound.playClone();
                     this.basketGlowMult = 1.0;
                 }
             }

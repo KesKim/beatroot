@@ -33,14 +33,14 @@ Enemy.prototype.draw = function(canvas, ctx) {
     this.canvasWidth = canvas.width;
 };
 
-Enemy.prototype.isColliding = function(x, y)
-{
+Enemy.prototype.isColliding = function(x, y) {
     var dist = Math.sqrt(Math.pow((this.posX - x), 2) + Math.pow((this.posY - y), 2));
 
-    if (dist <= this.circleRadius)
-    {
+    if (dist <= this.circleRadius) {
         this.destroyed = true;
+        return true;
     }
+    return false;
 }
 
 Enemy.prototype.update = function(timeDelta, start, end) {

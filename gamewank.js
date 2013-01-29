@@ -98,7 +98,7 @@ GameWank.prototype.mousemove = function(event) {
                 if (directionChanged) {
                     // Reset one-way-wank limiter.
                     this.soundRub.stop();
-                    this.soundRub.play();
+                    this.soundRub.playClone();
                     this.oneDirectionAdded = 0;
                 }
 
@@ -116,8 +116,7 @@ GameWank.prototype.mousemove = function(event) {
                 directionChanged = currentDirection.y !== this.lastDirection.y;
                 if (directionChanged && currentDirection.y == -1) {
                     // Reset one-way-wank limiter.
-                    this.soundRub.stop();
-                    this.soundRub.play();
+                    this.soundRub.playClone();
                     this.oneDirectionAdded = 0;
                 }
                 
